@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="edu.duke.bw224.battleship.BoardTextViewTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2023-01-24T21:53:08" hostname="Boyis-MBP.lan" time="0.038">
+  <properties/>
+  <testcase name="test_invalid_board_size()" classname="edu.duke.bw224.battleship.BoardTextViewTest" time="0.031"/>
+  <testcase name="test_display_empty_2by2()" classname="edu.duke.bw224.battleship.BoardTextViewTest" time="0.004"/>
+  <testcase name="test_display_empty_3by2()" classname="edu.duke.bw224.battleship.BoardTextViewTest" time="0.001"/>
+  <testcase name="test_display_empty_3by5()" classname="edu.duke.bw224.battleship.BoardTextViewTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
