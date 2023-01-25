@@ -13,7 +13,7 @@ public interface Ship<T> {
      * @param where is the Coordinate to check if this Ship occupies
      * @return true if where is inside this ship, false if not.
      */
-    public boolean occupiesCoordinates(Coordinate where);
+    boolean occupiesCoordinates(Coordinate where);
 
     /**
      * Check if this ship has been hit in all of its locations meaning it has been
@@ -21,7 +21,7 @@ public interface Ship<T> {
      *
      * @return true if this ship has been sunk, false otherwise.
      */
-    public boolean isSunk();
+     boolean isSunk();
 
     /**
      * Make this ship record that it has been hit at the given coordinate. The
@@ -30,7 +30,7 @@ public interface Ship<T> {
      * @param where specifies the coordinates that were hit.
      * @throws IllegalArgumentException if where is not part of the Ship
      */
-    public void recordHitAt(Coordinate where);
+     void recordHitAt(Coordinate where);
 
     /**
      * Check if this ship was hit at the specified coordinates. The coordinates must
@@ -42,7 +42,7 @@ public interface Ship<T> {
      * @throws IllegalArgumentException if the coordinates are not part of this
      *                                  ship.
      */
-    public boolean wasHitAt(Coordinate where);
+     boolean wasHitAt(Coordinate where);
 
     /**
      * Return the view-specific information at the given coordinate. This coordinate
@@ -52,6 +52,6 @@ public interface Ship<T> {
      * @throws IllegalArgumentException if where is not part of the Ship
      * @return The view-specific information at that coordinate.
      */
-    public T getDisplayInfoAt(Coordinate where);
+     T getDisplayInfoAt(Coordinate where);
 
 }

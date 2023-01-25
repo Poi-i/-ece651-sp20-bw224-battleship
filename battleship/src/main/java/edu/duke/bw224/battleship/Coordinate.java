@@ -21,7 +21,6 @@ public class Coordinate {
         String[] letters = descr.split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)");
 
         if (letters.length != 2 || letters[0].length() > 1 || !Character.isLetter(letters[0].charAt(0))){
-            System.out.println(letters[0]);
             throw new IllegalArgumentException("Describer must be combination with a letter and a number like \"A2\" but is " + descr);
         }
         int colLetter = Integer.parseInt(letters[1]);

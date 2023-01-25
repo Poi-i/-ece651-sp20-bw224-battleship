@@ -1,6 +1,6 @@
 package edu.duke.bw224.battleship;
 
-public class BasicShip implements Ship{
+public class BasicShip implements Ship<Character>{
     private final Coordinate myLocation;
 
     public BasicShip(Coordinate myLocation) {
@@ -47,7 +47,7 @@ public class BasicShip implements Ship{
      * @return
      */
     @Override
-    public Object getDisplayInfoAt(Coordinate where) {
+    public Character getDisplayInfoAt(Coordinate where) {
         return 's';
     }
 }
