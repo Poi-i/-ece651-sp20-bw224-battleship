@@ -51,6 +51,41 @@ class BoardTextViewTest {
         emptyBoardHelper(3, 5, expectedHeader, expectedBody);
     }
 
+
+    private void addShipToBoard(Board<Character> b, String descr){
+        Coordinate c = new Coordinate(descr);
+        Ship<Character> ship = new BasicShip(c);
+        b.tryAddShip(ship);
+    }
+
+    private void nonEmptyBoardHelper(String expectedHeader, String expectedBody, BoardTextView view){
+        assertEquals(expectedHeader, view.makeHeader());
+        String expected = expectedHeader + expectedBody + expectedHeader;
+        assertEquals(expected, view.displayMyOwnBoard());
+    }
+    @Test
+    void test_display_with_ship_4by3() {
+        Board<Character> b = new BattleShipBoard<Character>(4, 3);
+        String expectedHeader = "  0|1|2|3\n";
+        String expectedBody =
+                "A s| | |  A\n"+
+                "B  | | |  B\n"+
+                "C  | | |  C\n";
+        addShipToBoard(b,"A0");
+        BoardTextView view = new BoardTextView(b);
+        nonEmptyBoardHelper(expectedHeader, expectedBody, view);
+        addShipToBoard(b,"B1");
+        expectedBody =
+                "A s| | |  A\n"+
+                "B  |s| |  B\n"+
+                "C  | | |  C\n";
+        view = new BoardTextView(b);
+        nonEmptyBoardHelper(expectedHeader, expectedBody, view);
+
+    }
+
+
+
     @Test
     void test_invalid_board_size() {
         Board<Character> wideBoard = new BattleShipBoard<Character>(11, 20);
