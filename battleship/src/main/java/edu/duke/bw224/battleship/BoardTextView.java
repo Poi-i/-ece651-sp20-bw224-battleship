@@ -64,5 +64,4 @@ public class BoardTextView {
         return ans.toString();
     }
 
-
 }
