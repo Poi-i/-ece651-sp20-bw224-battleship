@@ -27,7 +27,7 @@ class CoordinateTest {
         Coordinate c4 = new Coordinate("Z0");
         assertEquals(25, c4.getRow());
         assertEquals(0, c4.getCol());
-
+        assertDoesNotThrow(() -> new Coordinate("a9"));
     }
     @Test
     public void test_string_constructor_error_cases() {
@@ -40,7 +40,7 @@ class CoordinateTest {
         assertThrows(IllegalArgumentException.class, () -> new Coordinate("A"));
         assertThrows(IllegalArgumentException.class, () -> new Coordinate("AB1"));
         assertThrows(IllegalArgumentException.class, () -> new Coordinate("A12"));
-        assertDoesNotThrow(() -> new Coordinate("a9"));
+
     }
 
 
