@@ -6,6 +6,12 @@ public class Placement {
     final Coordinate where;
     final char orientation;
 
+    /**
+     * default constructor
+     * @param where
+     * @param orientation
+     * @throws IllegalArgumentException if orientation is not in "vVhH"
+     */
     public Placement(Coordinate where, char orientation) {
         this.where = where;
         orientation = Character.toUpperCase(orientation);
@@ -15,6 +21,11 @@ public class Placement {
         this.orientation = orientation;
     }
 
+    /**
+     * Generate Placement based on String like "A2H" -> (0, 2): H
+     * @param descr is the describer string
+     * @throws IllegalArgumentException
+     */
     public Placement(String descr) {
         if (descr.length() < 3) {
             throw new IllegalArgumentException("Describer must be like \"A2V\" but is " + descr);
