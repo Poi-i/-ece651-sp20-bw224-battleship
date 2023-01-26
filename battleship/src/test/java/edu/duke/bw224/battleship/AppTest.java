@@ -13,7 +13,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class AppTest {
     final String HEADER =  "  0|1|2|3|4|5|6|7|8|9\n";
-    // 23 char per line
     final String BODY =
             "A  | | | | | | | | |  A\n" +
             "B  | | | | | | | | |  B\n" +
@@ -76,6 +75,7 @@ class AppTest {
     private String getExpectBody(String descr, String oldBody){
         Placement p = new Placement(descr);
         Coordinate c = p.getWhere();
+        // there are 23 char per line, \n per line
         int sep = c.getRow() * 23 + c.getCol() * 2 + 2 + c.getRow();
         return oldBody.substring(0, sep) + 's' + oldBody.substring(sep + 1);
     }
