@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'com.bmuschko.clover' version '2.2.3'
+    id 'application'
 }
 
 group 'org.example'
@@ -14,6 +15,12 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
     clover 'org.openclover:clover:4.3.1'
+    implementation 'com.google.guava:guava:30.1.1-jre'
+}
+
+application {
+    // Define the main class for the application.
+    mainClass = 'edu.duke.bw224.battleship.App'
 }
 
 test {
@@ -26,3 +33,8 @@ test {
         exceptionFormat = 'full'
     }
 }
+
+run {
+    standardInput = System.in
+}
+
