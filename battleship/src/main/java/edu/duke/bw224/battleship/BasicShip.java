@@ -19,41 +19,55 @@ public abstract class BasicShip<T> implements Ship<T>{
         this.myDisplayInfo = myDisplayInfo;
     }
 
-    // TODO Auto-generated method stub
+    /**
+     * helper method to check coordinate in the ship
+     * @param c is the coordinate to check
+     */
+    protected void checkCoordinateInThisShip(Coordinate c) {
+        if (!myPieces.containsKey(c)) {
+            throw new IllegalArgumentException("the coordinate should belong to the ship but is " + c.toString());
+        }
+    }
+
+
     /**
      * @param where is the Coordinate to check if this Ship occupies
      * @return where equals myLocation
      */
-
-
     @Override
     public boolean occupiesCoordinates(Coordinate where) {
         return myPieces.containsKey(where);
     }
 
     /**
-     * @return
+     * check every piece status in the ship and decide if sunk
+     * @return the ship is sunk or not
      */
     @Override
     public boolean isSunk() {
-        return false;
+        return !myPieces.containsValue(false);
     }
 
     /**
+     * record hit status on given coordinate
      * @param where specifies the coordinates that were hit.
      */
     @Override
     public void recordHitAt(Coordinate where) {
+        checkCoordinateInThisShip(where);
+        myPieces.put(where,true);
 
     }
 
     /**
+     * check whether the given coordinate is hit
      * @param where is the coordinates to check.
-     * @return
+     * @return hit or not
      */
     @Override
     public boolean wasHitAt(Coordinate where) {
-        return false;
+        checkCoordinateInThisShip(where);
+        return myPieces.get(where);
     }
 
     /**
@@ -62,8 +76,6 @@ public abstract class BasicShip<T> implements Ship<T>{
      */
     @Override
     public T getDisplayInfoAt(Coordinate where) {
-        //TODO this is not right. We need to look up the hit status of this coordinate
-        return myDisplayInfo.getInfo(where, false);
-
+        return myDisplayInfo.getInfo(where, myPieces.get(where));
     }
 }
