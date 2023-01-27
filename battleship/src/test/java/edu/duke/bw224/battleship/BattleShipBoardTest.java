@@ -45,7 +45,7 @@ public class BattleShipBoardTest {
     private void checkAddShipToBoard(BattleShipBoard<Character> b, int r, int c, Character[][] expected) {
         Coordinate coordinate = new Coordinate(r,c);
         //add ship to board and test again
-        Ship<Character> s = new BasicShip(coordinate);
+        RectangleShip<Character> s = new RectangleShip<>(coordinate, 's', '*');
         assertTrue(b.tryAddShip(s));
         expected[r][c] = s.getDisplayInfoAt(coordinate);
     }
@@ -58,6 +58,9 @@ public class BattleShipBoardTest {
         checkWhatIsAtBoard(b, expected);
         //add ship to board and test again
         checkAddShipToBoard(b, 1, 1, expected);
+        checkWhatIsAtBoard(b, expected);
+        //two ships
+        checkAddShipToBoard(b, 2, 3, expected);
         checkWhatIsAtBoard(b, expected);
     }
 }

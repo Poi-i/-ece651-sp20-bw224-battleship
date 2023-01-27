@@ -44,7 +44,7 @@ class AppTest {
     private App createTestApp(String userInput, ByteArrayOutputStream bytes) {
         StringReader sr = new StringReader(userInput);
         PrintStream ps = new PrintStream(bytes, true);
-        Board<Character> b = new BattleShipBoard<Character>(10, 20);
+        Board<Character> b = new BattleShipBoard<>(10, 20);
         return new App(b, sr, ps);
     }
 
@@ -58,9 +58,9 @@ class AppTest {
         expected[1] = new Placement(new Coordinate(2, 8), 'H');
         expected[2] = new Placement(new Coordinate(0, 4), 'V');
 
-        for (int i = 0; i < expected.length; i++) {
+        for (Placement placement : expected) {
             Placement p = app.readPlacement(prompt);
-            assertEquals(p, expected[i]); //did we get the right Placement back
+            assertEquals(p, placement); //did we get the right Placement back
             assertEquals(prompt + "\n", bytes.toString()); //should have printed prompt and newline
             bytes.reset(); //clear out bytes for next time around
         }

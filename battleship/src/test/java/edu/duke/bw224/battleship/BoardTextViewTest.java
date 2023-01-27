@@ -54,7 +54,7 @@ class BoardTextViewTest {
 
     private void addShipToBoard(Board<Character> b, String descr){
         Coordinate c = new Coordinate(descr);
-        Ship<Character> ship = new BasicShip(c);
+        RectangleShip<Character> ship = new RectangleShip<>(c, 's', '*');
         b.tryAddShip(ship);
     }
 
