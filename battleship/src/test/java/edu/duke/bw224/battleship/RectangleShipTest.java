@@ -13,6 +13,7 @@ class RectangleShipTest {
 
     private final char myData = 's';
     private final char onHit = '*';
+    private final String testShip = "testShip";
 
     private HashSet<Coordinate> produceRectangleCoords(Coordinate upperLeft, int width, int height) {
         HashSet<Coordinate> expected = new HashSet<>();
@@ -54,21 +55,22 @@ class RectangleShipTest {
         Coordinate c1 = new Coordinate(1,1);
         int w = 1, h = 3;
         // test valid ship
-        RectangleShip<Character> s1 = new RectangleShip<>(c1, w, h, myData, onHit);
+        RectangleShip<Character> s1 = new RectangleShip<>(testShip, c1, w, h, myData, onHit);
         HashSet<Coordinate> coords = produceRectangleCoords(c1, w, h);
         HashMap<Coordinate, Boolean> expected = new HashMap<>();
         for (Coordinate coord : coords) {
             expected.put(coord, false);
         }
         assertEquals(expected, s1.myPieces);
+        assertEquals(testShip, s1.getName());
         // test invalid ship
-        assertThrows(IllegalArgumentException.class, () -> new RectangleShip<Character>(c1, 0, -1, myData, onHit));
+        assertThrows(IllegalArgumentException.class, () -> new RectangleShip<Character>(testShip, c1, 0, -1, myData, onHit));
     }
 
     @Test
     void test_record_hit_at() {
         Coordinate upperLeft1 = new Coordinate(1, 1);
-        RectangleShip<Character> s1 = new RectangleShip<>(upperLeft1, 1, 3, myData, onHit);
+        RectangleShip<Character> s1 = new RectangleShip<>(testShip, upperLeft1, 1, 3, myData, onHit);
         ArrayList<Coordinate> coords = new ArrayList<>(produceRectangleCoords(upperLeft1, 1, 3));
         assertThrows(IllegalArgumentException.class, () -> s1.recordHitAt(new Coordinate(0, 0)));
         for(int i = 0; i < coords.size(); i++){
@@ -83,7 +85,7 @@ class RectangleShipTest {
     @Test
     void test_was_hit_at() {
         Coordinate upperLeft1 = new Coordinate(1, 1);
-        RectangleShip<Character> s1 = new RectangleShip<>(upperLeft1, 1, 3, myData, onHit);
+        RectangleShip<Character> s1 = new RectangleShip<>(testShip, upperLeft1, 1, 3, myData, onHit);
         ArrayList<Coordinate> coords = new ArrayList<>(s1.myPieces.keySet());
         //test illegal coordinate
         assertThrows(IllegalArgumentException.class, () -> s1.recordHitAt(new Coordinate(0, 0)));
@@ -99,7 +101,7 @@ class RectangleShipTest {
     @Test
     void test_is_sunk() {
         Coordinate upperLeft1 = new Coordinate(1, 1);
-        RectangleShip<Character> s1 = new RectangleShip<>(upperLeft1, 1, 3, myData, onHit);
+        RectangleShip<Character> s1 = new RectangleShip<>(testShip, upperLeft1, 1, 3, myData, onHit);
         ArrayList<Coordinate> coords = new ArrayList<>(s1.myPieces.keySet());
         for(int i = 0; i < coords.size(); i++){
             s1.recordHitAt(coords.get(i));
@@ -115,7 +117,7 @@ class RectangleShipTest {
     @Test
     void test_get_display_info() {
         Coordinate upperLeft1 = new Coordinate(1, 1);
-        RectangleShip<Character> s1 = new RectangleShip<>(upperLeft1, 1, 3, myData, onHit);
+        RectangleShip<Character> s1 = new RectangleShip<>(testShip, upperLeft1, 1, 3, myData, onHit);
         ArrayList<Coordinate> coords = new ArrayList<>(s1.myPieces.keySet());
         for(int i = 0; i < coords.size(); i++){
             s1.recordHitAt(coords.get(i));

@@ -8,6 +8,13 @@ package edu.duke.bw224.battleship;
 public interface Ship<T> {
 
     /**
+     * Get the name of this Ship, such as "submarine".
+     * @return the name of this ship
+     */
+    public String getName();
+
+
+    /**
      * Check if this ship occupies the given coordinate.
      *
      * @param where is the Coordinate to check if this Ship occupies

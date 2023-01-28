@@ -75,19 +75,32 @@ class AppTest {
     private String getExpectBody(String descr, String oldBody){
         Placement p = new Placement(descr);
         Coordinate c = p.getWhere();
+        int[] seps = new int[3];
+        for(int i = 0; i < seps.length; i++) {
+            if (p.getOrientation() == 'V') {
+                seps[i] = (c.getRow() + i) * 23 + c.getCol() * 2 + 2 + c.getRow() + i;
+
+            }
+            else {
+                seps[i] =  c.getRow() * 23 + c.getCol() * 2 + 2 + i + c.getRow();
+            }
+            oldBody = oldBody.substring(0, seps[i]) + 'd' + oldBody.substring(seps[i] + 1);
+        }
+
         // there are 23 char per line, \n per line
-        int sep = c.getRow() * 23 + c.getCol() * 2 + 2 + c.getRow();
-        return oldBody.substring(0, sep) + 's' + oldBody.substring(sep + 1);
+//        int sep1 = c.getRow() * 23 + c.getCol() * 2 + 2 + c.getRow();
+        return oldBody;
     }
 
     @Test
     void test_do_one_placement() throws IOException {
-        String userInput = "C8H\nB2V\na4v\n";
+        String userInput = "C8V\nB2V\na4v\n";
         String prompt = "Where would you like to put your ship?";
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         App app = createTestApp(userInput, bytes);
         String expectedBody = BODY;
         String[] descrs = userInput.split("\n");
+
         for(String descr : descrs){
             app.doOnePlacement();
             expectedBody = getExpectBody(descr, expectedBody);
