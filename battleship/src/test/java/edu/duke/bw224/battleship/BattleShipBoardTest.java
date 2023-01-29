@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class BattleShipBoardTest {
 
+    private final V1ShipFactory shipFactory = new V1ShipFactory();
+
     @Test
     public void test_width_and_height() {
         Board<Character> b1 = new BattleShipBoard<>(10, 20);
@@ -19,6 +21,19 @@ public class BattleShipBoardTest {
         assertThrows(IllegalArgumentException.class, () -> new BattleShipBoard<>(0, 20));
         assertThrows(IllegalArgumentException.class, () -> new BattleShipBoard<>(10, -5));
         assertThrows(IllegalArgumentException.class, () -> new BattleShipBoard<>(-8, 20));
+    }
+
+    @Test
+    void test_try_add_ship() {
+        BattleShipBoard<Character> b = new BattleShipBoard<>(10, 20);
+        Placement v_1_2 = new Placement(new Coordinate(1, 2), 'V');
+        Placement h_1_3 = new Placement(new Coordinate(1, 3), 'H');
+        Ship<Character> s1 = shipFactory.makeBattleship(v_1_2);
+        assertTrue(b.tryAddShip(s1));
+        Ship<Character> collide_s2 = shipFactory.makeDestroyer(v_1_2);
+        assertFalse(b.tryAddShip(collide_s2));
+        Ship<Character> s3 = shipFactory.makeDestroyer(h_1_3);
+        assertTrue(b.tryAddShip(s3));
     }
 
     /**

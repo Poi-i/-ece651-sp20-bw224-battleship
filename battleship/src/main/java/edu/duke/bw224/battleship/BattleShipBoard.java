@@ -38,7 +38,7 @@ public class BattleShipBoard<T> implements Board<T>{
     }
 
     public BattleShipBoard(int width, int height) {
-        this(width, height, new InBoundsRuleChecker<T>(null));
+        this(width, height, new NoCollisionRuleChecker<>(new InBoundsRuleChecker<>(null)));
     }
 
     /**
@@ -57,15 +57,18 @@ public class BattleShipBoard<T> implements Board<T>{
     }
 
     /**
-     * add a ship to myShip list and return true
+     * try to add a ship to myShip list
      * @param toAdd is the ship we are about to add
-     * @return
+     * @return successfully add ship or not
      */
     // TODO update later (tasks 13-15), check validity of placement
     @Override
     public boolean tryAddShip(Ship<T> toAdd) {
-        myShips.add(toAdd);
-        return true;
+        if (placementRuleChecker.checkPlacement(toAdd, this)) {
+            myShips.add(toAdd);
+            return true;
+        }
+        return false;
     }
 
 
