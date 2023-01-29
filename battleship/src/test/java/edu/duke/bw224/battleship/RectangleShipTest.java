@@ -1,5 +1,6 @@
 package edu.duke.bw224.battleship;
 
+import org.checkerframework.checker.units.qual.C;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -14,6 +15,17 @@ class RectangleShipTest {
     private final char myData = 's';
     private final char onHit = '*';
     private final String testShip = "testShip";
+
+    @Test
+    void test_to_string() {
+        Coordinate c1 = new Coordinate(1, 1);
+        RectangleShip<Character> s1 = new RectangleShip<>(testShip, c1, 1, 2, myData, onHit);
+        String expected = "RectangleShip{" +
+                "name='" + testShip + '\'' +
+                ", myPieces=" + s1.myPieces.toString() +
+                '}';
+        assertEquals(expected, s1.toString());
+    }
 
     private HashSet<Coordinate> produceRectangleCoords(Coordinate upperLeft, int width, int height) {
         HashSet<Coordinate> expected = new HashSet<>();
@@ -62,9 +74,11 @@ class RectangleShipTest {
             expected.put(coord, false);
         }
         assertEquals(expected, s1.myPieces);
+        //test getCoordinates
+        assertEquals(expected.keySet(), s1.getCoordinates());
         assertEquals(testShip, s1.getName());
         // test invalid ship
-        assertThrows(IllegalArgumentException.class, () -> new RectangleShip<Character>(testShip, c1, 0, -1, myData, onHit));
+        assertThrows(IllegalArgumentException.class, () -> new RectangleShip<>(testShip, c1, 0, -1, myData, onHit));
     }
 
     @Test

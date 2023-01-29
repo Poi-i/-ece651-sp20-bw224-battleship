@@ -20,6 +20,15 @@ public abstract class BasicShip<T> implements Ship<T>{
     }
 
     /**
+     * Get all of the Coordinates that this Ship occupies.
+     * @return An Iterable with the coordinates that this Ship occupies
+     */
+    @Override
+    public Iterable<Coordinate> getCoordinates() {
+        return myPieces.keySet();
+    }
+
+    /**
      * helper method to check coordinate in the ship
      * @param c is the coordinate to check
      */

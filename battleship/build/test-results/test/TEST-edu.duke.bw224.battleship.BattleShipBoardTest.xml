@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="edu.duke.bw224.battleship.BattleShipBoardTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2023-01-27T04:59:29" hostname="Boyis-MacBook-Pro.local" time="0.035">
+<testsuite name="edu.duke.bw224.battleship.BattleShipBoardTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2023-01-29T16:38:27" hostname="Boyis-MacBook-Pro.local" time="0.003">
   <properties/>
-  <testcase name="test_width_and_height()" classname="edu.duke.bw224.battleship.BattleShipBoardTest" time="0.026"/>
-  <testcase name="test_whatIsAt()" classname="edu.duke.bw224.battleship.BattleShipBoardTest" time="0.006"/>
-  <testcase name="test_invalid_dimensions()" classname="edu.duke.bw224.battleship.BattleShipBoardTest" time="0.001"/>
+  <testcase name="test_width_and_height()" classname="edu.duke.bw224.battleship.BattleShipBoardTest" time="0.0"/>
+  <testcase name="test_whatIsAt()" classname="edu.duke.bw224.battleship.BattleShipBoardTest" time="0.001"/>
+  <testcase name="test_invalid_dimensions()" classname="edu.duke.bw224.battleship.BattleShipBoardTest" time="0.002"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

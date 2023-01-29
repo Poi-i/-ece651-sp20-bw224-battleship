@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="edu.duke.bw224.battleship.SimpleShipDisplayInfoTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-01-29T16:38:27" hostname="Boyis-MacBook-Pro.local" time="0.0">
+  <properties/>
+  <testcase name="test_get_info()" classname="edu.duke.bw224.battleship.SimpleShipDisplayInfoTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
