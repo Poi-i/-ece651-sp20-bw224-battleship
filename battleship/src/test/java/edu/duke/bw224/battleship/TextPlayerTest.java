@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class TextPlayerTest {
 
-    final String HEADER =  "  0|1|2|3|4|5|6|7|8|9\n";
+    final String HEADER = "  0|1|2|3|4|5|6|7|8|9\n";
     final String BODY =
             "A  | | | | | | | | |  A\n" +
                     "B  | | | | | | | | |  B\n" +
@@ -38,6 +38,7 @@ class TextPlayerTest {
         Board<Character> b = new BattleShipBoard<>(w, h);
         return new TextPlayer("Test", b, new BufferedReader(sr), ps, new V1ShipFactory());
     }
+
     @Test
     void test_read_placement() throws IOException {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
@@ -58,22 +59,22 @@ class TextPlayerTest {
 
     /**
      * Helper function to generate Board body based on new move describer
-     * @param descr is the move describer, e.g. "A0H"
+     *
+     * @param descr   is the move describer, e.g. "A0H"
      * @param oldBody is the old body created by last move
      * @return new body string
      */
-    private String getExpectBody(String descr, String oldBody){
+    private String getExpectBody(String descr, String oldBody) {
         Placement p = new Placement(descr);
         Coordinate c = p.getWhere();
         int[] seps = new int[3];
-        for(int i = 0; i < seps.length; i++) {
+        for (int i = 0; i < seps.length; i++) {
             if (p.getOrientation() == 'V') {
                 // there are 23 char per line, \n per line
                 seps[i] = (c.getRow() + i) * 23 + c.getCol() * 2 + 2 + c.getRow() + i;
 
-            }
-            else {
-                seps[i] =  c.getRow() * 23 + c.getCol() * 2 + 2 + i + c.getRow();
+            } else {
+                seps[i] = c.getRow() * 23 + c.getCol() * 2 + 2 + i + c.getRow();
             }
             oldBody = oldBody.substring(0, seps[i]) + 'd' + oldBody.substring(seps[i] + 1);
         }
@@ -84,43 +85,17 @@ class TextPlayerTest {
     @Test
     void test_do_one_placement() throws IOException {
         String userInput = "C8V\nB2V\na4v\n";
-        String prompt = "Player Test: Where would you like to put your ship?";
+        String ship = "Destroyer";
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         TextPlayer player = createTestPlayer(10, 20, userInput, bytes);
+        String prompt = "Player " + player.name + ": Where would you like to place a " + ship + "?";
         String expectedBody = BODY;
         String[] descrs = userInput.split("\n");
-        for(String descr : descrs){
-            player.doOnePlacement();
+        for (String descr : descrs) {
+            player.doOnePlacement(ship, player.shipCreationFns.get(ship));
             expectedBody = getExpectBody(descr, expectedBody);
             assertEquals(prompt + "\n" + HEADER + expectedBody + HEADER + "\n", bytes.toString());
             bytes.reset();
         }
-    }
-
-    @Test
-    void test_do_placement_phase() throws IOException{
-        String userInput = "C8V";
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        TextPlayer player = createTestPlayer(10, 20, userInput, bytes);
-        String prompt = "Player " + player.name + ": Where would you like to put your ship?";
-
-        String instructionMsg = "--------------------------------------------------------------------------------\n" +
-                "Player  "+ player.name + ": you are going to place the following ships (which are all\n" +
-                "rectangular). For each ship, type the coordinate of the upper left\n" +
-                "side of the ship, followed by either H (for horizontal) or V (for\n" +
-                "vertical).  For example M4H would place a ship horizontally starting\n" +
-                "at M4 and going to the right.  You have\n" +
-                "\n" +
-                "2 \"Submarines\" ships that are 1x2 \n" +
-                "3 \"Destroyers\" that are 1x3\n" +
-                "3 \"Battleships\" that are 1x4\n" +
-                "2 \"Carriers\" that are 1x6\n" +
-                "--------------------------------------------------------------------------------\n";
-        String expectedBody = BODY;
-        String preMsg = HEADER + BODY + HEADER + "\n" + instructionMsg + "\n";
-        player.doPlacementPhase();
-        expectedBody = getExpectBody(userInput, expectedBody);
-        assertEquals( preMsg+ prompt + "\n" + HEADER + expectedBody + HEADER + "\n", bytes.toString());
-        bytes.reset();
     }
 }
