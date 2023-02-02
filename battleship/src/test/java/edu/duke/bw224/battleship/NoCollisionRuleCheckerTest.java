@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class NoCollisionRuleCheckerTest {
     private final V1ShipFactory shipFactory = new V1ShipFactory();
 
+
     /**
      * helper function to test chain or isolated NoCollisionRuleChecker
      * @param next the next rule checker
@@ -17,12 +18,12 @@ class NoCollisionRuleCheckerTest {
         //test valid placement
         Placement v1_2 = new Placement(new Coordinate(1, 2), 'V');
         Ship<Character> valid_sbm = shipFactory.makeSubmarine(v1_2);
-        assertTrue(noCollisionRuleChecker.checkPlacement(valid_sbm, board));
+        assertNull(noCollisionRuleChecker.checkPlacement(valid_sbm, board));
         //test collision
-        assertTrue(board.tryAddShip(valid_sbm));
+        assertNull(board.tryAddShip(valid_sbm));
         Placement v2_2 = new Placement(new Coordinate(2, 2), 'V');
         Ship<Character> collide_sum = shipFactory.makeSubmarine(v1_2);
-        assertFalse(noCollisionRuleChecker.checkPlacement(collide_sum, board));
+        assertEquals(noCollisionRuleChecker.message, noCollisionRuleChecker.checkPlacement(collide_sum, board));
     }
 
     @Test

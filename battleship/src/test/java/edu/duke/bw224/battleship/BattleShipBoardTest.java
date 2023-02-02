@@ -29,11 +29,12 @@ public class BattleShipBoardTest {
         Placement v_1_2 = new Placement(new Coordinate(1, 2), 'V');
         Placement h_1_3 = new Placement(new Coordinate(1, 3), 'H');
         Ship<Character> s1 = shipFactory.makeBattleship(v_1_2);
-        assertTrue(b.tryAddShip(s1));
+        assertNull(b.tryAddShip(s1));
         Ship<Character> collide_s2 = shipFactory.makeDestroyer(v_1_2);
-        assertFalse(b.tryAddShip(collide_s2));
+        String collideMsg = "That placement is invalid: the ship overlaps another ship.\n";
+        assertEquals(collideMsg, b.tryAddShip(collide_s2));
         Ship<Character> s3 = shipFactory.makeDestroyer(h_1_3);
-        assertTrue(b.tryAddShip(s3));
+        assertNull(b.tryAddShip(s3));
     }
 
     /**
@@ -61,7 +62,7 @@ public class BattleShipBoardTest {
         Coordinate coordinate = new Coordinate(r,c);
         //add ship to board and test again
         RectangleShip<Character> s = new RectangleShip<>(coordinate, 's', '*');
-        assertTrue(b.tryAddShip(s));
+        assertNull(b.tryAddShip(s));
         expected[r][c] = s.getDisplayInfoAt(coordinate);
     }
 

@@ -57,7 +57,14 @@ public class TextPlayer {
     public Placement readPlacement(String prompt) throws IOException {
         out.println(prompt);
         String s = inputReader.readLine();
-        return new Placement(s);
+        Placement placement = null;
+        try{
+            placement = new Placement(s);
+        } catch (IllegalArgumentException e) {
+            out.println(e.getMessage());
+            return readPlacement(prompt);
+        }
+        return placement;
     }
 
     /**
@@ -67,9 +74,14 @@ public class TextPlayer {
     public void doOnePlacement(String shipName, Function<Placement, Ship<Character>> createFn) throws IOException {
         Placement placement = readPlacement("Player " + name + ": Where would you like to place a " + shipName + "?");
         Ship<Character> s = createFn.apply(placement);
-        theBoard.tryAddShip(s);
-        out.println(view.displayMyOwnBoard());
-
+        String message = theBoard.tryAddShip(s);
+        if (message != null) {
+            out.println(message);
+            doOnePlacement(shipName, createFn);
+        }
+        else {
+            out.println(view.displayMyOwnBoard());
+        }
     }
 
     /**

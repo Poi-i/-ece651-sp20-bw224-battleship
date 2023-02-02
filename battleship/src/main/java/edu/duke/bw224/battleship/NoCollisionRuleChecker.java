@@ -2,6 +2,7 @@ package edu.duke.bw224.battleship;
 
 public class NoCollisionRuleChecker<T> extends PlacementRuleChecker<T>{
 
+    protected final String message = "That placement is invalid: the ship overlaps another ship.\n";
     public NoCollisionRuleChecker(PlacementRuleChecker<T> next) {
         super(next);
     }
@@ -13,12 +14,12 @@ public class NoCollisionRuleChecker<T> extends PlacementRuleChecker<T>{
      * @return in bound or not
      */
     @Override
-    protected boolean checkMyRule(Ship<T> theShip, Board<T> theBoard) {
+    protected String checkMyRule(Ship<T> theShip, Board<T> theBoard) {
         for (Coordinate coord : theShip.getCoordinates()) {
             if (theBoard.whatIsAt(coord) != null) {
-                return false;
+                return message;
             }
         }
-        return true;
+        return null;
     }
 }

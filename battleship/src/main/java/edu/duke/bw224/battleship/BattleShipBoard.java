@@ -63,12 +63,12 @@ public class BattleShipBoard<T> implements Board<T>{
      */
     // TODO update later (tasks 13-15), check validity of placement
     @Override
-    public boolean tryAddShip(Ship<T> toAdd) {
-        if (placementRuleChecker.checkPlacement(toAdd, this)) {
+    public String tryAddShip(Ship<T> toAdd) {
+        String message = this.placementRuleChecker.checkPlacement(toAdd, this);
+        if (message == null) {
             myShips.add(toAdd);
-            return true;
         }
-        return false;
+        return message;
     }
 
 

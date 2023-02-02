@@ -74,7 +74,7 @@ class TextPlayerTest {
                 seps[i] = (c.getRow() + i) * 23 + c.getCol() * 2 + 2 + c.getRow() + i;
 
             } else {
-                seps[i] = c.getRow() * 23 + c.getCol() * 2 + 2 + i + c.getRow();
+                seps[i] = c.getRow() * 23 + c.getCol() * 2 + 2 + i * 2 + c.getRow();
             }
             oldBody = oldBody.substring(0, seps[i]) + 'd' + oldBody.substring(seps[i] + 1);
         }
@@ -82,20 +82,24 @@ class TextPlayerTest {
         return oldBody;
     }
 
-    @Test
-    void test_do_one_placement() throws IOException {
-        String userInput = "C8V\nB2V\na4v\n";
+    private void doOnePlacementHelper(String userInput) throws IOException {
         String ship = "Destroyer";
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         TextPlayer player = createTestPlayer(10, 20, userInput, bytes);
         String prompt = "Player " + player.name + ": Where would you like to place a " + ship + "?";
         String expectedBody = BODY;
         String[] descrs = userInput.split("\n");
+
         for (String descr : descrs) {
-            player.doOnePlacement(ship, player.shipCreationFns.get(ship));
             expectedBody = getExpectBody(descr, expectedBody);
+            player.doOnePlacement(ship, player.shipCreationFns.get(ship));
             assertEquals(prompt + "\n" + HEADER + expectedBody + HEADER + "\n", bytes.toString());
             bytes.reset();
         }
+    }
+    @Test
+    void test_do_one_placement() throws IOException {
+        String correctUserInput = "C8V\nB2H\nA5V\nD0H\n";
+        doOnePlacementHelper(correctUserInput);
     }
 }
