@@ -6,17 +6,19 @@ public abstract class BasicShip<T> implements Ship<T>{
     // record coordinates the ship occupies, and track which ones have been hit
     protected HashMap<Coordinate, Boolean> myPieces;
     protected ShipDisplayInfo<T> myDisplayInfo;
+    protected ShipDisplayInfo<T> enemyDisplayInfo;
 
     /**
      * initialize myPieces to have each Coordinate in where mapped to false
      * @param where is the Coordinate iterable
      */
-    public BasicShip(Iterable<Coordinate> where, ShipDisplayInfo<T> myDisplayInfo) {
+    public BasicShip(Iterable<Coordinate> where, ShipDisplayInfo<T> myDisplayInfo, ShipDisplayInfo<T> enemyDisplayInfo) {
         myPieces = new HashMap<>();
         for (Coordinate c : where) {
             myPieces.put(c, false);
         }
         this.myDisplayInfo = myDisplayInfo;
+        this.enemyDisplayInfo = enemyDisplayInfo;
     }
 
     /**
@@ -84,9 +86,12 @@ public abstract class BasicShip<T> implements Ship<T>{
      * @return the information we are going to display to user with type T
      */
     @Override
-    public T getDisplayInfoAt(Coordinate where) {
+    public T getDisplayInfoAt(Coordinate where, boolean myShip) {
         checkCoordinateInThisShip(where);
-        return myDisplayInfo.getInfo(where, myPieces.get(where));
+        if (myShip) {
+            return myDisplayInfo.getInfo(where, myPieces.get(where));
+        }
+        return enemyDisplayInfo.getInfo(where, myPieces.get(where));
     }
 
 }

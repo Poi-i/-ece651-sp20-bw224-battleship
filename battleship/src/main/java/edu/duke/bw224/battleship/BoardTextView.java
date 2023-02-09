@@ -1,5 +1,7 @@
 package edu.duke.bw224.battleship;
 
+import java.util.function.Function;
+
 /**
  * This class handles textual display of
  * a Board<Character> (i.e., converting it to a string to show
@@ -28,10 +30,27 @@ public class BoardTextView {
     }
 
     /**
-     * This makes the whole board
+     * This makes the whole board of self
      * @return the String of whole board
      */
     public String displayMyOwnBoard() {
+        return displayAnyBoard((c) -> toDisplay.whatIsAtForSelf(c));
+    }
+
+    /**
+     * This makes the whole board of enemy
+     * @return the String of whole board
+     */
+    public String displayMyEnemyBoard() {
+        return displayAnyBoard((c) -> toDisplay.whatIsAtForEnemy(c));
+    }
+
+    /**
+     * display any board based on the given function
+     * @param getSquareFn is the function to get char to display for a square
+     * @return string of the board to display
+     */
+    protected String displayAnyBoard(Function<Coordinate, Character> getSquareFn) {
         String header = makeHeader();
         StringBuilder ans = new StringBuilder(header);
         for (int row = 0; row < toDisplay.getHeight(); row++){
@@ -41,7 +60,7 @@ public class BoardTextView {
             //ans.append(sep.repeat(Math.max(0, toDisplay.getWidth() - 1)));
             for(int col = 0; col < toDisplay.getWidth(); col ++){
                 Coordinate c = new Coordinate(row, col);
-                String cell = toDisplay.whatIsAt(c) == null ? " " : toDisplay.whatIsAt(c).toString();
+                String cell =  getSquareFn.apply(c) == null ? " " : getSquareFn.apply(c).toString();
                 ans.append(sep).append(cell);
                 sep = "|";
             }

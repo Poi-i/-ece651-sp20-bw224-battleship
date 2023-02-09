@@ -14,7 +14,7 @@ public interface Ship<T> {
     public String getName();
 
     /**
-     * Get all of the Coordinates that this Ship occupies.
+     * Get all the Coordinates that this Ship occupies.
      * @return An Iterable with the coordinates that this Ship occupies
      */
     public Iterable<Coordinate> getCoordinates();
@@ -62,9 +62,10 @@ public interface Ship<T> {
      * must be part of the ship.
      *
      * @param where is the coordinate to return information for
+     * @param myShip indicates display my ship info or enemy info
      * @throws IllegalArgumentException if where is not part of the Ship
      * @return The view-specific information at that coordinate.
      */
-     T getDisplayInfoAt(Coordinate where);
+     T getDisplayInfoAt(Coordinate where, boolean myShip);
 
 }

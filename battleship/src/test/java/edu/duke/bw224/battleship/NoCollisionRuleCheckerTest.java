@@ -14,7 +14,7 @@ class NoCollisionRuleCheckerTest {
      */
     private void no_collision_rule_helper(PlacementRuleChecker<Character> next) {
         NoCollisionRuleChecker<Character> noCollisionRuleChecker = new NoCollisionRuleChecker<>(next);
-        BattleShipBoard<Character> board = new BattleShipBoard<>(10, 20);
+        BattleShipBoard<Character> board = new BattleShipBoard<>(10, 20, 'X');
         //test valid placement
         Placement v1_2 = new Placement(new Coordinate(1, 2), 'V');
         Ship<Character> valid_sbm = shipFactory.makeSubmarine(v1_2);

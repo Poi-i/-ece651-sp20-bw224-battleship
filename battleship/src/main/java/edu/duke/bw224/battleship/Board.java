@@ -7,6 +7,10 @@ public interface Board<T> {
 
     public String tryAddShip(Ship<T> toAdd);
 
-    public T whatIsAt(Coordinate where);
+    public T whatIsAtForSelf(Coordinate where);
+
+    public T whatIsAtForEnemy(Coordinate where);
+
+    public Ship<T> fireAt(Coordinate c);
 
 }

@@ -35,7 +35,7 @@ class TextPlayerTest {
     private TextPlayer createTestPlayer(int w, int h, String userInput, OutputStream bytes) {
         StringReader sr = new StringReader(userInput);
         PrintStream ps = new PrintStream(bytes, true);
-        Board<Character> b = new BattleShipBoard<>(w, h);
+        Board<Character> b = new BattleShipBoard<>(w, h, 'X');
         return new TextPlayer("Test", b, new BufferedReader(sr), ps, new V1ShipFactory());
     }
 

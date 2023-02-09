@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="edu.duke.bw224.battleship.PlacementTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2023-02-09T01:56:18" hostname="Boyis-MacBook-Pro.local" time="0.004">
+  <properties/>
+  <testcase name="test_string_constructor_valid_cases()" classname="edu.duke.bw224.battleship.PlacementTest" time="0.001"/>
+  <testcase name="test_where_and_orientation()" classname="edu.duke.bw224.battleship.PlacementTest" time="0.0"/>
+  <testcase name="test_hashCode()" classname="edu.duke.bw224.battleship.PlacementTest" time="0.001"/>
+  <testcase name="test_string_constructor_error_cases()" classname="edu.duke.bw224.battleship.PlacementTest" time="0.001"/>
+  <testcase name="test_equals()" classname="edu.duke.bw224.battleship.PlacementTest" time="0.0"/>
+  <testcase name="test_toString()" classname="edu.duke.bw224.battleship.PlacementTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

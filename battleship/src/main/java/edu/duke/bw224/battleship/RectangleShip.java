@@ -21,7 +21,8 @@ public class RectangleShip<T> extends BasicShip<T>{
     static HashSet<Coordinate> makeCoords(Coordinate upperLeft, int width, int height) {
         HashSet<Coordinate> coords = new HashSet<>();
         if (width <= 0 || height <= 0) {
-            throw new IllegalArgumentException("width and height should be positive integer but are " + width + " and " + height);
+            throw new IllegalArgumentException("width and height should be positive integer but are " + width + " and "
+                    + height);
         }
         int startRow = upperLeft.getRow(), startCol = upperLeft.getCol();
         for (int i = 0; i < width; i++) {
@@ -34,13 +35,15 @@ public class RectangleShip<T> extends BasicShip<T>{
 
 
 
-    public RectangleShip(String name, Coordinate upperLeft, int width, int height, ShipDisplayInfo<T> myDisplayInfo) {
-        super(makeCoords(upperLeft, width, height), myDisplayInfo);
+    public RectangleShip(String name, Coordinate upperLeft, int width, int height, ShipDisplayInfo<T> myDisplayInfo,
+                         ShipDisplayInfo<T> enemyDisplayInfo) {
+        super(makeCoords(upperLeft, width, height), myDisplayInfo, enemyDisplayInfo);
         this.name = name;
     }
 
     public RectangleShip(String name, Coordinate upperLeft, int width, int height, T data, T onHit ) {
-        this(name, upperLeft, width, height, new SimpleShipDisplayInfo<T>(data, onHit));
+        this(name, upperLeft, width, height, new SimpleShipDisplayInfo<T>(data, onHit),
+                new SimpleShipDisplayInfo<>(null, data));
     }
 
     public RectangleShip(Coordinate upperLeft, T data, T onHit) {

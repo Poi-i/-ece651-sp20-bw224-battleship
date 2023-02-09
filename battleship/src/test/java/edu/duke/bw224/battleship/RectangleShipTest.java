@@ -129,16 +129,19 @@ class RectangleShipTest {
     }
 
     @Test
-    void test_get_display_info() {
+    void test_get_display_info_at() {
         Coordinate upperLeft1 = new Coordinate(1, 1);
         RectangleShip<Character> s1 = new RectangleShip<>(testShip, upperLeft1, 1, 3, myData, onHit);
         ArrayList<Coordinate> coords = new ArrayList<>(s1.myPieces.keySet());
         for(int i = 0; i < coords.size(); i++){
             s1.recordHitAt(coords.get(i));
-            assertEquals(onHit, s1.getDisplayInfoAt(coords.get(i)));
+            assertEquals(onHit, s1.getDisplayInfoAt(coords.get(i), true));
+            assertEquals(myData, s1.getDisplayInfoAt(coords.get(i), false));
             for(int j = i + 1; j < coords.size(); j++){
-                assertEquals(myData, s1.getDisplayInfoAt(coords.get(j)));
+                assertEquals(myData, s1.getDisplayInfoAt(coords.get(j), true));
+                assertEquals(null, s1.getDisplayInfoAt(coords.get(j), false));
             }
         }
+
     }
 }

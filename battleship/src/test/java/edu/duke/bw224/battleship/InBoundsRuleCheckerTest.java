@@ -9,7 +9,7 @@ class InBoundsRuleCheckerTest {
     @Test
     void test_in_bound_rule() {
         InBoundsRuleChecker<Character> inBoundsRuleChecker= new InBoundsRuleChecker<>(null);
-        BattleShipBoard<Character> board = new BattleShipBoard<>(10, 20);
+        BattleShipBoard<Character> board = new BattleShipBoard<>(10, 20, 'X');
         V1ShipFactory shipFactory = new V1ShipFactory();
         //test valid placement
         Placement v1_2 = new Placement(new Coordinate(1, 2), 'V');
