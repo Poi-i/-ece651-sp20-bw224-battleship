@@ -3,6 +3,7 @@ package edu.duke.bw224.battleship;
 import com.sun.jdi.VoidType;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.function.Function;
 import java.util.function.Function;
@@ -19,6 +20,21 @@ public class BattleShipBoardTest {
         assertEquals(10, b1.getWidth());
         assertEquals(20, b1.getHeight());
     }
+
+    @Test
+    void test_get_ships_and_at() {
+        Board<Character> b1 = new BattleShipBoard<>(10, 20, 'X');
+        Ship<Character> s1 = shipFactory.makeSubmarine(new Placement("A0V"));
+        ArrayList<Ship<Character>> expected = new ArrayList<>();
+        expected.add(s1);
+        b1.tryAddShip(s1);
+        // test getShips()
+        assertEquals(expected, b1.getShips());
+        // test getShipAt()
+        assertEquals(s1, b1.getShipAt(new Coordinate(0, 0)));
+        assertEquals(null, b1.getShipAt(new Coordinate(5, 3)));
+    }
+
 
     @Test
     public void test_invalid_dimensions() {

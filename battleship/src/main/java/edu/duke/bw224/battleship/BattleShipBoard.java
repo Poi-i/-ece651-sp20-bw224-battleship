@@ -20,6 +20,28 @@ public class BattleShipBoard<T> implements Board<T>{
     }
 
     /**
+     * @return
+     */
+    @Override
+    public Iterable<Ship<T>> getShips() {
+        return myShips;
+    }
+
+    /**
+     * @param coordinate is the coordinate we need to check
+     * @return
+     */
+    @Override
+    public Ship<T> getShipAt(Coordinate coordinate) {
+        for (Ship<T> s : myShips) {
+            if (s.occupiesCoordinates(coordinate)) {
+                return s;
+            }
+        }
+        return null;
+    }
+
+    /**
      * Constructs a BattleShipBoard with the specified width
      * and height
      * @param w is the width of the newly constructed Board<T>.

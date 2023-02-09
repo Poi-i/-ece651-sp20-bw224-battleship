@@ -1,5 +1,9 @@
 package edu.duke.bw224.battleship;
 
+/**
+ * Abstract class for placement chaining check
+ * @param <T>
+ */
 public abstract class PlacementRuleChecker<T> {
     private  final PlacementRuleChecker<T> next;
 
