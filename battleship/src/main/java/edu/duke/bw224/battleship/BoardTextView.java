@@ -87,4 +87,31 @@ public class BoardTextView {
         return ans.toString();
     }
 
+    /**
+     * Display player's board and enemy's board side by side
+     * @param enemyView is enemy board view
+     * @param myHeader is player's header
+     * @param enemyHeader is enemy's header
+     * @return the side by side boards in string
+     */
+    public String displayMyBoardWithEnemyNextToIt(BoardTextView enemyView, String myHeader, String enemyHeader) {
+        // split board string by \n
+        String[] myStrings = this.displayMyOwnBoard().split("\n");
+        String[] enemyStrings = enemyView.displayMyOwnBoard().split("\n");
+        StringBuilder boards = new StringBuilder();
+        int w = this.toDisplay.getWidth();
+        // build new header
+        boards.append(" ".repeat(5)).append(myHeader);
+        int interval = 2 * w + 22 - boards.length();
+        boards.append(" ".repeat(interval)).append(enemyHeader + "\n");
+
+        // build each new row
+        for (int i = 0; i < myStrings.length; ++i) {
+            boards.append(myStrings[i]);
+            interval = 2 * w + 19 - myStrings[i].length();
+            boards.append(" ".repeat(interval)).append(enemyStrings[i] + "\n");
+        }
+        return boards.toString();
+    }
+
 }

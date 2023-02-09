@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class BoardTextViewTest {
 
+    private final V1ShipFactory factory = new V1ShipFactory();
+
     /**
      * This is a helper function to test empty board
      * @param w is the width of the constructed board
@@ -99,5 +101,31 @@ class BoardTextViewTest {
         Board<Character> tallBoard = new BattleShipBoard<Character>(10, 27, 'X');
         assertThrows(IllegalArgumentException.class, () -> new BoardTextView(wideBoard));
         assertThrows(IllegalArgumentException.class, () -> new BoardTextView(tallBoard));
+    }
+
+    @Test
+    void test_display_my_board_with_enemy_next_to_it() {
+        Board<Character> myBoard = new BattleShipBoard<Character>(4, 3, 'X');
+        Board<Character> enemyBoard = new BattleShipBoard<Character>(4, 3, 'X');
+        Placement pA0H = new Placement("a0h");
+        Placement pB1H = new Placement("b1h");
+        Placement pA0V = new Placement("a0v");
+        Placement pA1H = new Placement("a1H");
+        assertNull(myBoard.tryAddShip(factory.makeSubmarine(pA0H)));
+        assertNull(myBoard.tryAddShip(factory.makeDestroyer(pB1H)));
+        assertNull(enemyBoard.tryAddShip(factory.makeSubmarine(pA0V)));
+        assertNull(enemyBoard.tryAddShip(factory.makeDestroyer(pA1H)));
+        BoardTextView myView = new BoardTextView(myBoard);
+        BoardTextView enemyView = new BoardTextView(enemyBoard);
+        String expected =
+                "     Your ocean               Player B's ocean\n" +
+                "  0|1|2|3                    0|1|2|3\n" +
+                "A s|s| |  A                A s|d|d|d A\n"+
+                "B  |d|d|d B                B s| | |  B\n"+
+                "C  | | |  C                C  | | |  C\n"+
+                "  0|1|2|3                    0|1|2|3\n";
+        assertEquals(expected, myView.displayMyBoardWithEnemyNextToIt(enemyView, "Your ocean",
+                "Player B's ocean"));
+
     }
 }
