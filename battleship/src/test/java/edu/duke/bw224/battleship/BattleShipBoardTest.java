@@ -15,10 +15,11 @@ public class BattleShipBoardTest {
     private final V1ShipFactory shipFactory = new V1ShipFactory();
 
     @Test
-    public void test_width_and_height() {
+    public void test_width_and_height_and_miss_info() {
         Board<Character> b1 = new BattleShipBoard<>(10, 20, 'X');
         assertEquals(10, b1.getWidth());
         assertEquals(20, b1.getHeight());
+        assertEquals('X', b1.getMissInfo());
     }
 
     @Test

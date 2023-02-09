@@ -15,17 +15,33 @@ public class App {
     }
 
 
-//    public App(Reader inputSource, PrintStream out) {
-//        Board<Character> b1 = new BattleShipBoard<Character>(10, 20);
-//        Board<Character> b2 = new BattleShipBoard<Character>(10, 20);
-//        this.player1 = new TextPlayer("A", b1, new BufferedReader(inputSource), out, factory);
-//        this.player2 = new TextPlayer("B", b2, new BufferedReader(inputSource), out, factory);
-//    }
-
-
     public void doPlacementPhase() throws IOException{
         player1.doPlacementPhase();
         player2.doPlacementPhase();
+    }
+
+    private void printWinMsg(TextPlayer player, String winMsg) {
+        String divideLine = "=".repeat(winMsg.length() - 1);
+        player.out.println(divideLine);
+        player.out.println(winMsg + divideLine);
+    }
+    public void doAttackingPhase() throws IOException{
+        String player1Win = "|   " + "Player " + player1.name + " win!" + "   |\n";
+        String player2Win = "|   " + "Player " + player2.name + " win!" + "   |\n";
+
+        while(true) {
+            player1.doAttackingPhase(player2);
+            if(player2.theBoard.checkAllSunk()) {
+                printWinMsg(player1, player1Win);
+                return;
+            }
+            player2.doAttackingPhase(player1);
+            if(player1.theBoard.checkAllSunk()) {
+                printWinMsg(player2, player2Win);
+                return;
+            }
+        }
+
     }
 
     public static void main(String[] args) throws IOException {
@@ -37,5 +53,6 @@ public class App {
         TextPlayer player2 = new TextPlayer("B", b2, input, System.out, factory);
         App app = new App(player1, player2);
         app.doPlacementPhase();
+        app.doAttackingPhase();
     }
 }

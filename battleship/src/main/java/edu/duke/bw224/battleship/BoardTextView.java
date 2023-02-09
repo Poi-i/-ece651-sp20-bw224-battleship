@@ -97,7 +97,7 @@ public class BoardTextView {
     public String displayMyBoardWithEnemyNextToIt(BoardTextView enemyView, String myHeader, String enemyHeader) {
         // split board string by \n
         String[] myStrings = this.displayMyOwnBoard().split("\n");
-        String[] enemyStrings = enemyView.displayMyOwnBoard().split("\n");
+        String[] enemyStrings = enemyView.displayMyEnemyBoard().split("\n");
         StringBuilder boards = new StringBuilder();
         int w = this.toDisplay.getWidth();
         // build new header

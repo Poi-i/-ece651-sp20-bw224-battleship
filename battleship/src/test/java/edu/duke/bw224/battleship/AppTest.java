@@ -1,7 +1,4 @@
 import edu.duke.bw224.battleship.App;
-import edu.duke.bw224.battleship.BattleShipBoard;
-import edu.duke.bw224.battleship.Board;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.ResourceAccessMode;
 import org.junit.jupiter.api.parallel.ResourceLock;
@@ -51,15 +48,14 @@ class AppTest {
 //    }
 
 //    @Disabled
-    @Test
-    @ResourceLock(value = Resources.SYSTEM_OUT, mode = ResourceAccessMode.READ_WRITE)
-    void test_main() throws IOException{
+
+    private void mainHelper(String inputFileName, String outputFileName) throws IOException {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         PrintStream out = new PrintStream(bytes, true);
         // get input and expected output
-        InputStream input = getClass().getClassLoader().getResourceAsStream("input.txt");
+        InputStream input = getClass().getClassLoader().getResourceAsStream(inputFileName);
         assertNotNull(input);
-        InputStream expectedStream = getClass().getClassLoader().getResourceAsStream("output.txt");
+        InputStream expectedStream = getClass().getClassLoader().getResourceAsStream(outputFileName);
         assertNotNull(expectedStream);
         // remember old System.in & out
         InputStream oldIn = System.in;
@@ -76,6 +72,15 @@ class AppTest {
         String expected = new String(expectedStream.readAllBytes());
         String actual = bytes.toString();
         assertEquals(expected, actual);
+    }
+
+    @Test
+    @ResourceLock(value = Resources.SYSTEM_OUT, mode = ResourceAccessMode.READ_WRITE)
+    void test_main() throws IOException{
+        mainHelper("input_invalid_placement_player1_win.txt",
+                "output_invalid_placement_player1_win.txt");
+        mainHelper("input_invalid_fire_player2_win.txt",
+                "output_invalid_fire_player2_win.txt");
 
     }
 }

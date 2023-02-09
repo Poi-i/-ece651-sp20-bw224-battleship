@@ -27,6 +27,11 @@ public interface Board<T> {
     public Ship<T> getShipAt(Coordinate coordinate);
 
     /**
+     * Return the miss info of the board
+     * @return the board's miss info
+     */
+    public T getMissInfo();
+    /**
      * try to add a ship on board
      * @param toAdd is the ship we are about to add
      * @return error msg if add failed, or null if success
@@ -53,5 +58,11 @@ public interface Board<T> {
      * @return the ship if we hit, or null if we miss
      */
     public Ship<T> fireAt(Coordinate c);
+
+    /**
+     * check all ships on the board are sunk
+     * @return true or false
+     */
+    public boolean checkAllSunk();
 
 }

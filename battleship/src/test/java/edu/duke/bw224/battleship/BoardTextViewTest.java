@@ -117,15 +117,24 @@ class BoardTextViewTest {
         assertNull(enemyBoard.tryAddShip(factory.makeDestroyer(pA1H)));
         BoardTextView myView = new BoardTextView(myBoard);
         BoardTextView enemyView = new BoardTextView(enemyBoard);
-        String expected =
+        String expectedSelf =
                 "     Your ocean               Player B's ocean\n" +
                 "  0|1|2|3                    0|1|2|3\n" +
-                "A s|s| |  A                A s|d|d|d A\n"+
-                "B  |d|d|d B                B s| | |  B\n"+
+                "A s|s| |  A                A  | | |  A\n"+
+                "B  |d|d|d B                B  | | |  B\n"+
                 "C  | | |  C                C  | | |  C\n"+
                 "  0|1|2|3                    0|1|2|3\n";
-        assertEquals(expected, myView.displayMyBoardWithEnemyNextToIt(enemyView, "Your ocean",
+        String expectedEnemy =
+                "     Your ocean               Player A's ocean\n" +
+                "  0|1|2|3                    0|1|2|3\n" +
+                "A s|d|d|d A                A  | | |  A\n"+
+                "B s| | |  B                B  | | |  B\n"+
+                "C  | | |  C                C  | | |  C\n"+
+                "  0|1|2|3                    0|1|2|3\n";
+        assertEquals(expectedSelf, myView.displayMyBoardWithEnemyNextToIt(enemyView, "Your ocean",
                 "Player B's ocean"));
+        assertEquals(expectedEnemy, enemyView.displayMyBoardWithEnemyNextToIt(myView, "Your ocean",
+                "Player A's ocean"));
 
     }
 }

@@ -1,8 +1,8 @@
 package edu.duke.bw224.battleship;
 
-public class AllSunkWinCheck<T> extends WinChecker<T>{
+public class AllSunkLoseCheck<T> extends LoseChecker<T>{
 
-    public AllSunkWinCheck(WinChecker<T> next) {
+    public AllSunkLoseCheck(LoseChecker<T> next) {
         super(next);
     }
 

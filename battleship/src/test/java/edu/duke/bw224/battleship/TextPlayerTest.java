@@ -31,6 +31,8 @@ class TextPlayerTest {
                     "S  | | | | | | | | |  S\n" +
                     "T  | | | | | | | | |  T\n";
 
+    private final V1ShipFactory factory = new V1ShipFactory();
+
 
     private TextPlayer createTestPlayer(int w, int h, String userInput, OutputStream bytes) {
         StringReader sr = new StringReader(userInput);
@@ -55,6 +57,17 @@ class TextPlayerTest {
             assertEquals(prompt + "\n", bytes.toString()); //should have printed prompt and newline
             bytes.reset(); //clear out bytes for next time around
         }
+    }
+
+    @Test
+    void test_read_coordinate() throws IOException {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        TextPlayer player = createTestPlayer(10, 20, "B2\n", bytes);
+        String prompt = "Player " + player.name + ": Which coordinate do you want to fire at?";
+        Coordinate expected = new Coordinate("b2");
+        Coordinate coordinate = player.readFireCoordinate(prompt);
+        assertEquals(expected, coordinate); //did we get the right Placement back
+        assertEquals(prompt + "\n", bytes.toString()); //should have printed prompt and newline
     }
 
     /**
@@ -102,4 +115,36 @@ class TextPlayerTest {
         String correctUserInput = "C8V\nB2H\nA5V\nD0H\n";
         doOnePlacementHelper(correctUserInput);
     }
+
+    private void playOneTurnHelper(TextPlayer self, TextPlayer enemy, String expected, ByteArrayOutputStream bytes) throws IOException {
+        self.playOneTurn(enemy);    //fire at B2
+        assertEquals( expected, bytes.toString());
+        bytes.reset();
+    }
+
+    @Test
+    void test_play_one_turn() throws IOException {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        //test fire at miss
+        TextPlayer enemy = createTestPlayer(10, 20, "", bytes);
+        TextPlayer self = createTestPlayer(10, 20, "B2\nB2\nB2\nA1\nA1\nC3", bytes);
+        String prompt = "Player Test: Which coordinate do you want to fire at?\n\n";
+        String divideLine = "-".repeat(60) + "\n";
+        String miss = divideLine + "You missed!\n" + divideLine + "\n";
+        String hit = divideLine + "You hit a Submarine!\n" + divideLine + "\n";
+        String invalidMiss = divideLine + "This is a miss that you've already fire at!\n" + divideLine + "\n";
+        String invalidCoord = divideLine + "This is a coordinate that you've already fire at!\n" + divideLine + "\n";
+        playOneTurnHelper(self, enemy, prompt + miss, bytes); //fire at B2
+        //add a ship at that coordinate and test hit
+        Placement B2V = new Placement("b2v");
+        assertNull(enemy.theBoard.tryAddShip(factory.makeSubmarine(B2V)));
+        playOneTurnHelper(self, enemy, prompt + hit, bytes); //fire at B2
+        //test invalid fire: already hit
+        String expected = prompt + invalidCoord + prompt + miss;
+        playOneTurnHelper(self, enemy, expected, bytes); //fire at B2(invalid), then A1(miss)
+        //test invalid fire: already miss
+        expected = prompt + invalidMiss + prompt + miss;
+        playOneTurnHelper(self, enemy, expected, bytes); //fire at A1(invalid), then B2(miss)
+    }
+
 }

@@ -16,7 +16,8 @@ public class Placement {
         this.where = where;
         orientation = Character.toUpperCase(orientation);
         if("VH".indexOf(orientation) == -1){
-            throw new IllegalArgumentException("the orientation should be either 'V' or 'H' but is " + orientation);
+            throw new IllegalArgumentException("the orientation should be either 'V' or 'H' but is "
+                    + orientation + "\n");
         }
         this.orientation = orientation;
     }
@@ -28,14 +29,15 @@ public class Placement {
      */
     public Placement(String descr) {
         if (descr.length() < 3) {
-            throw new IllegalArgumentException("Describer must be like \"A2V\" but is " + descr);
+            throw new IllegalArgumentException("Describer must be like \"A2V\" but is " + descr + "\n");
         }
         String coordinateDescr = descr.substring(0, 2);
         this.where = new Coordinate(coordinateDescr);
         String orientationDescr = descr.substring(2);
         char orientation = Character.toUpperCase(orientationDescr.charAt(0));
         if(orientationDescr.length() != 1 || !Character.isLetter(orientation) || "VH".indexOf(orientation) == -1){
-            throw new IllegalArgumentException("the orientation should be either 'V' or 'H' but is " + orientationDescr);
+            throw new IllegalArgumentException("the orientation should be either 'V' or 'H' but is "
+                    + orientationDescr + "\n");
         }
         this.orientation = orientation;
     }

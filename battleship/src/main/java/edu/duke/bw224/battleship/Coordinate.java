@@ -21,11 +21,12 @@ public class Coordinate {
         String[] letters = descr.split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)");
 
         if (letters.length != 2 || letters[0].length() > 1 || !Character.isLetter(letters[0].charAt(0))){
-            throw new IllegalArgumentException("Describer must be combination with a letter and a number like \"A2\" but is " + descr);
+            throw new IllegalArgumentException("Describer must be combination with a letter and a number like \"A2\" " +
+                    "but is " + descr  + "\n");
         }
         int colLetter = Integer.parseInt(letters[1]);
         if (colLetter > 10){
-            throw new IllegalArgumentException("The colum letter must within 0~10 but is " + colLetter);
+            throw new IllegalArgumentException("The colum letter must within 0~10 but is " + colLetter  + "\n");
         }
         char rowLetter = Character.toUpperCase(letters[0].charAt(0));
         this.row = rowLetter - 'A';
