@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="edu.duke.bw224.battleship.AllSunkLoseCheckTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-02-10T04:46:03" hostname="Boyis-MacBook-Pro.local" time="0.0">
+<testsuite name="edu.duke.bw224.battleship.AllSunkLoseCheckTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-02-10T23:09:13" hostname="Boyis-MacBook-Pro.local" time="0.007">
   <properties/>
-  <testcase name="test_all_sunk_win_check()" classname="edu.duke.bw224.battleship.AllSunkLoseCheckTest" time="0.0"/>
+  <testcase name="test_all_sunk_win_check()" classname="edu.duke.bw224.battleship.AllSunkLoseCheckTest" time="0.007"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

@@ -17,7 +17,7 @@ class RectangleShipTest {
     private final String testShip = "testShip";
 
     @Test
-    void test_to_string() {
+    void test_to_string_and_get() {
         Coordinate c1 = new Coordinate(1, 1);
         RectangleShip<Character> s1 = new RectangleShip<>(testShip, c1, 1, 2, myData, onHit);
         String expected = "RectangleShip{" +
@@ -25,6 +25,7 @@ class RectangleShipTest {
                 ", myPieces=" + s1.myPieces.toString() +
                 '}';
         assertEquals(expected, s1.toString());
+        assertEquals(c1, s1.getAnchor());
     }
 
     private HashSet<Coordinate> produceRectangleCoords(Coordinate upperLeft, int width, int height) {

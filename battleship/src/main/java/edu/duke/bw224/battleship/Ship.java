@@ -19,6 +19,7 @@ public interface Ship<T> {
      */
     public Iterable<Coordinate> getCoordinates();
 
+    public Coordinate getAnchor();
 
     /**
      * Check if this ship occupies the given coordinate.

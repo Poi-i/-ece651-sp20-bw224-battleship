@@ -6,6 +6,32 @@ public class ZShip<T> extends BasicShip<T>{
     private final String name;
 
     /**
+     * set anchor for ship (relative stable coordinate)
+     * @param upperLeft
+     * @param orientation
+     * @return
+     */
+    static Coordinate setAnchor (Coordinate upperLeft, char orientation) {
+        int row = upperLeft.getRow(), col = upperLeft.getCol();
+        int newRow = row, newCol = col;
+        switch (orientation) {
+            case 'U':
+                break;
+            case 'D':
+                newRow = row + 4;
+                newCol = col + 1;
+                break;
+            case 'L':
+                newRow = row + 1;
+                break;
+            case 'R':
+                newCol = col + 4;
+                break;
+        }
+        return new Coordinate(newRow, newCol);
+    }
+
+    /**
      * Z ship constructor
      * @param upperLeft is the upperLeft coordinate of the ship
      * @param myDisplayInfo is the ship display info
@@ -14,7 +40,7 @@ public class ZShip<T> extends BasicShip<T>{
      */
     public ZShip(String name, Coordinate upperLeft, char orientation, ShipDisplayInfo<T> myDisplayInfo,
                  ShipDisplayInfo<T> enemyDisplayInfo) {
-        super(upperLeft, makeCoords(upperLeft, orientation), myDisplayInfo, enemyDisplayInfo);
+        super(setAnchor(upperLeft, orientation), makeCoords(upperLeft, orientation), myDisplayInfo, enemyDisplayInfo);
         this.name = name;
     }
 

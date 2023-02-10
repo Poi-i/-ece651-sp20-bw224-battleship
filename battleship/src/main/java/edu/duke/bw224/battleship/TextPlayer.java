@@ -19,6 +19,8 @@ public class TextPlayer {
     final AbstractShipFactory<Character> shipFactory;
     final ArrayList<String> shipsToPlace;
     final HashMap<String, Function<Placement, Ship<Character>>> shipCreationFns;
+    private int moveActionRemaining;
+    private int sonarActionRemaining;
 
 
     public TextPlayer(String name, Board<Character> theBoard, BufferedReader inputReader, PrintStream out, AbstractShipFactory<Character> factory) {
@@ -32,6 +34,8 @@ public class TextPlayer {
         this.shipCreationFns = new HashMap<>();
         setupShipCreationList();
         setupShipCreationMap();
+        this.moveActionRemaining = 3;
+        this.sonarActionRemaining = 3;
     }
 
     protected void setupShipCreationMap() {
@@ -46,6 +50,14 @@ public class TextPlayer {
         shipsToPlace.addAll(Collections.nCopies(3, "Destroyer"));
         shipsToPlace.addAll(Collections.nCopies(3, "Battleship"));
         shipsToPlace.addAll(Collections.nCopies(2, "Carrier"));
+    }
+
+    public int getMoveActionRemaining() {
+        return moveActionRemaining;
+    }
+
+    public int getSonarActionRemaining() {
+        return sonarActionRemaining;
     }
 
     /**
@@ -74,7 +86,7 @@ public class TextPlayer {
      * @return a coordinate object
      * @throws IOException
      */
-    public Coordinate readFireCoordinate(String prompt) throws IOException {
+    public Coordinate readCoordinate(String prompt) throws IOException {
         this.out.println(prompt);
         String s = inputReader.readLine();
         Coordinate coordinate = null;
@@ -82,11 +94,27 @@ public class TextPlayer {
             coordinate = new Coordinate(s);
         } catch (IllegalArgumentException e) {
             this.out.println(e.getMessage());
-            return readFireCoordinate(prompt);
+            return readCoordinate(prompt);
         }
         return coordinate;
     }
 
+
+    /**
+     * read an action choice : F, M or S from user input
+     * @param prompt is the prompt message show to user
+     * @return the action choice Char
+     * @throws IOException
+     */
+    public Character readActionChoice(String prompt) throws IOException {
+        this.out.println(prompt);
+        String s = inputReader.readLine();
+        if(s.length() != 1 || "FMSfms".indexOf(s.charAt(0)) == -1) {
+            this.out.println("Your action choice: " + s + " is invalid, please try again!");
+            return readActionChoice(prompt);
+        }
+        return Character.toUpperCase(s.charAt(0));
+    }
 
 
 
@@ -141,20 +169,32 @@ public class TextPlayer {
         }
     }
 
-    public void playOneTurn(TextPlayer enemy) throws IOException {
+    public void doOneFire(TextPlayer enemy) throws IOException {
         String divideLine = "-".repeat(60) + "\n";
         String prompt = "Player " + this.name + ": Which coordinate do you want to fire at?\n";
-        Coordinate fireAt = readFireCoordinate(prompt);
+        Coordinate fireAt = readCoordinate(prompt);
         // check fire coordinate validity, already hit/miss
         Character fireAtStatus = enemy.theBoard.whatIsAtForEnemy(fireAt);
         if (fireAtStatus != null) {
             if (fireAtStatus.equals(this.theBoard.getMissInfo())) {
-                this.out.println(divideLine + "This is a miss that you've already fire at!\n" + divideLine);
+                if (enemy.theBoard.whatIsAtForSelf(fireAt) == null) {
+                    this.out.println(divideLine + "This is a miss that you've already fire at!\n" + divideLine);
+                }else{
+                    Ship<Character> targetShip = enemy.theBoard.fireAt(fireAt);
+                    this.out.println(divideLine + "You hit a " + targetShip.getName() + "!\n" + divideLine);
+                    return;
+                }
             }
             else {
-                this.out.println(divideLine + "This is a coordinate that you've already fire at!\n" + divideLine);
+                if (enemy.theBoard.whatIsAtForSelf(fireAt) != null) {
+                    this.out.println(divideLine + "This is a coordinate that you've already fire at!\n" + divideLine);
+                }else{
+                    Ship<Character> targetShip = enemy.theBoard.fireAt(fireAt);
+                    this.out.println(divideLine + "You missed!\n" + divideLine);
+                    return;
+                }
             }
-            playOneTurn(enemy);
+            doOneFire(enemy);
         }
         // valid fire coordinate
         else {
@@ -166,8 +206,84 @@ public class TextPlayer {
                 this.out.println(divideLine + "You hit a " + targetShip.getName() + "!\n" + divideLine);
             }
         }
-
     }
+
+    //TODO
+    public void doOneMove(TextPlayer enemy) throws IOException {
+        String coordinatePrompt = "Player " + this.name + ": Please choose a coordinate in the ship you want to move:";
+        Coordinate coordInShip = readCoordinate(coordinatePrompt);
+        Ship<Character> shipToMove = this.theBoard.getShipAt(coordInShip);
+        if (shipToMove == null) {
+            this.out.println("This coordinate has no ship on it! Please try again!");
+            doOneMove(enemy);
+            return;
+        }
+        String placementPrompt = "Player " + this.name + ": Please enter a new placement for this ship " +
+                "(coordinate + orientation):";
+        Placement moveTo = readPlacement(placementPrompt);
+        String message = theBoard.checkPlacementOrientation(shipToMove.getName(), moveTo);
+        if (message != null) {
+            this.out.println(message);
+            doOneMove(enemy);
+            return;
+        }
+        message = this.theBoard.tryMoveShip(shipToMove, shipCreationFns.get(shipToMove.getName()).apply(moveTo));
+        if (message != null) {
+            this.out.println(message);
+            doOneMove(enemy);
+            return;
+        }
+        this.out.println("Move " + shipToMove.getName() + " to " + moveTo.toString() + " successfully!");
+        this.moveActionRemaining--;
+    }
+
+    //TODO
+    public void doOneSonar() {
+        this.out.println("sonar");
+    }
+
+    /**
+     * current player round, can choose to fire, move or sonar scan
+     * @param enemy is the player's enemy
+     * @throws IOException
+     */
+    public void playOneTurn(TextPlayer enemy) throws IOException {
+        String prompt =
+                "Possible actions for Player " + this.name + ":\n" +
+                "\n" +
+                " F Fire at a square\n" +
+                " M Move a ship to another square (" + this.moveActionRemaining + " remaining)\n" +
+                " S Sonar scan (" + this.sonarActionRemaining + " remaining)\n" +
+                "\n" +
+                "Player " + this.name + ", what would you like to do?";
+        Character choice = readActionChoice(prompt);
+        switch (choice){
+            case 'F':
+                doOneFire(enemy);
+                break;
+            case 'M':
+                if (this.moveActionRemaining > 0) {
+                    doOneMove(enemy);
+                    break;
+                }
+                else {
+                    this.out.println("You have run out of move actions! Please choose another action.");
+                    playOneTurn(enemy);
+                }
+            case 'S':
+                if (this.sonarActionRemaining > 0) {
+                    this.sonarActionRemaining--;
+                    doOneSonar();
+                    break;
+                }
+                else {
+                    this.out.println("You have run out of sonar scan actions! Please choose another action.");
+                    playOneTurn(enemy);
+                }
+        }
+    }
+
+
 
     public void doAttackingPhase(TextPlayer enemy) throws IOException {
         this.out.println("Player " + this.name + "'s turn:\n");

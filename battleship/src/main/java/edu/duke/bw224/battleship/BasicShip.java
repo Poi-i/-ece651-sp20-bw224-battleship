@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 public abstract class BasicShip<T> implements Ship<T>{
     // record coordinates the ship occupies, and track which ones have been hit
-    protected Coordinate upperLeft;
+    protected Coordinate anchor;
     protected HashMap<Coordinate, Boolean> myPieces;
     protected ShipDisplayInfo<T> myDisplayInfo;
     protected ShipDisplayInfo<T> enemyDisplayInfo;
@@ -13,14 +13,14 @@ public abstract class BasicShip<T> implements Ship<T>{
      * initialize myPieces to have each Coordinate in where mapped to false
      * @param where is the Coordinate iterable
      */
-    public BasicShip(Coordinate upperLeft, Iterable<Coordinate> where, ShipDisplayInfo<T> myDisplayInfo, ShipDisplayInfo<T> enemyDisplayInfo) {
+    public BasicShip(Coordinate anchor, Iterable<Coordinate> where, ShipDisplayInfo<T> myDisplayInfo, ShipDisplayInfo<T> enemyDisplayInfo) {
         myPieces = new HashMap<>();
         for (Coordinate c : where) {
             myPieces.put(c, false);
         }
         this.myDisplayInfo = myDisplayInfo;
         this.enemyDisplayInfo = enemyDisplayInfo;
-        this.upperLeft = upperLeft;
+        this.anchor = anchor;
     }
 
     /**
@@ -30,6 +30,14 @@ public abstract class BasicShip<T> implements Ship<T>{
     @Override
     public Iterable<Coordinate> getCoordinates() {
         return myPieces.keySet();
+    }
+
+    /** Get upperLeft coordinate of the ship
+     * @return upperLeft coordinate
+     */
+    @Override
+    public Coordinate getAnchor() {
+        return anchor;
     }
 
     /**
@@ -69,7 +77,6 @@ public abstract class BasicShip<T> implements Ship<T>{
     public void recordHitAt(Coordinate where) {
         checkCoordinateInThisShip(where);
         myPieces.put(where,true);
-
     }
 
     /**

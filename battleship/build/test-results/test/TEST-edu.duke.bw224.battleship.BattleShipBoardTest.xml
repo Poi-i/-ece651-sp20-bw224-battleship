@@ -1,12 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="edu.duke.bw224.battleship.BattleShipBoardTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2023-02-10T04:46:03" hostname="Boyis-MacBook-Pro.local" time="0.005">
+<testsuite name="edu.duke.bw224.battleship.BattleShipBoardTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2023-02-10T23:09:13" hostname="Boyis-MacBook-Pro.local" time="0.02">
   <properties/>
-  <testcase name="test_fire_at()" classname="edu.duke.bw224.battleship.BattleShipBoardTest" time="0.0"/>
-  <testcase name="test_get_ships_and_at()" classname="edu.duke.bw224.battleship.BattleShipBoardTest" time="0.0"/>
+  <testcase name="test_fire_at()" classname="edu.duke.bw224.battleship.BattleShipBoardTest" time="0.008"/>
+  <testcase name="test_get_ships_and_at()" classname="edu.duke.bw224.battleship.BattleShipBoardTest" time="0.001"/>
+  <testcase name="test_try_move_ship()" classname="edu.duke.bw224.battleship.BattleShipBoardTest" time="0.002"/>
   <testcase name="test_width_and_height_and_miss_info()" classname="edu.duke.bw224.battleship.BattleShipBoardTest" time="0.0"/>
   <testcase name="test_try_add_ship()" classname="edu.duke.bw224.battleship.BattleShipBoardTest" time="0.0"/>
-  <testcase name="test_invalid_dimensions()" classname="edu.duke.bw224.battleship.BattleShipBoardTest" time="0.001"/>
-  <testcase name="test_what_is_at()" classname="edu.duke.bw224.battleship.BattleShipBoardTest" time="0.001"/>
-  <system-out><![CDATA[]]></system-out>
+  <testcase name="test_check_all_sunk()" classname="edu.duke.bw224.battleship.BattleShipBoardTest" time="0.001"/>
+  <testcase name="test_check_placement_orientation()" classname="edu.duke.bw224.battleship.BattleShipBoardTest" time="0.0"/>
+  <testcase name="test_invalid_dimensions()" classname="edu.duke.bw224.battleship.BattleShipBoardTest" time="0.002"/>
+  <testcase name="test_what_is_at()" classname="edu.duke.bw224.battleship.BattleShipBoardTest" time="0.0"/>
+  <system-out><![CDATA[  0|1|2|3|4
+A  | |b| |  A
+B  | |b|*|  B
+C  | |b| |  C
+D  | | | |  D
+  0|1|2|3|4
+
+  0|1|2|3|4
+A  | |*| |  A
+B  | |b|*|  B
+C  | |b| |  C
+D  | | | |  D
+  0|1|2|3|4
+
+  0|1|2|3|4
+A  |*| | |  A
+B *|b|b| |  B
+C  | | | |  C
+D  | | | |  D
+  0|1|2|3|4
+
+  0|1|2|3|4
+A  |b|b| |  A
+B  | | | |  B
+C  | | | |  C
+D  | | | |  D
+  0|1|2|3|4
+
+]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

@@ -28,7 +28,6 @@ public class App {
     public void doAttackingPhase() throws IOException{
         String player1Win = "|   " + "Player " + player1.name + " win!" + "   |\n";
         String player2Win = "|   " + "Player " + player2.name + " win!" + "   |\n";
-
         while(true) {
             player1.doAttackingPhase(player2);
             if(player2.theBoard.checkAllSunk()) {

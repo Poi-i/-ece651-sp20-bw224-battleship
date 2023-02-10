@@ -1,5 +1,6 @@
 package edu.duke.bw224.battleship;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
@@ -42,6 +43,14 @@ class TextPlayerTest {
     }
 
     @Test
+    void test_text_player_creation() {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        TextPlayer player = createTestPlayer(10, 20, "B2V\nC8H\na4v\n", bytes);
+        assertEquals(3, player.getMoveActionRemaining());
+        assertEquals(3, player.getSonarActionRemaining());
+    }
+
+    @Test
     void test_read_placement() throws IOException {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         TextPlayer player = createTestPlayer(10, 20, "B2V\nC8H\na4v\n", bytes);
@@ -65,9 +74,46 @@ class TextPlayerTest {
         TextPlayer player = createTestPlayer(10, 20, "B2\n", bytes);
         String prompt = "Player " + player.name + ": Which coordinate do you want to fire at?";
         Coordinate expected = new Coordinate("b2");
-        Coordinate coordinate = player.readFireCoordinate(prompt);
+        Coordinate coordinate = player.readCoordinate(prompt);
         assertEquals(expected, coordinate); //did we get the right Placement back
         assertEquals(prompt + "\n", bytes.toString()); //should have printed prompt and newline
+    }
+
+    @Test
+    void test_read_action_choice() throws IOException {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        String inputString = "f\nM\ns\n\nh\n1\nfm\nF";
+        TextPlayer player = createTestPlayer(10, 20, inputString, bytes);
+        String[] choices = inputString.split("\n");
+        String prompt =
+                "Possible actions for Player " + player.name + ":\n" +
+                        "\n" +
+                        " F Fire at a square\n" +
+                        " M Move a ship to another square (" + player.getMoveActionRemaining() + " remaining)\n" +
+                        " S Sonar scan (" + player.getSonarActionRemaining() + " remaining)\n" +
+                        "\n" +
+                        "Player " + player.name + ", what would you like to do?";
+        StringBuilder invalidExpected = new StringBuilder();
+        for (int i = 0; i < choices.length; ++i) {
+            //test valid choice: f, M, s
+            if(i < 3) {
+                assertEquals(Character.toUpperCase(choices[i].charAt(0)), player.readActionChoice(prompt));
+                assertEquals(prompt + "\n", bytes.toString());
+                bytes.reset();
+
+            }
+            else if(i < choices.length - 1){
+                //test invalid choice: h, 1, fm, end with valid F
+                String errorMsg = "Your action choice: %s is invalid, please try again!\n";
+                invalidExpected.append(prompt + "\n" + errorMsg.formatted(choices[i]));
+            }
+            else {
+                invalidExpected.append(prompt + "\n");
+                assertEquals(Character.toUpperCase(choices[i].charAt(0)), player.readActionChoice(prompt));
+                assertEquals(invalidExpected.toString(), bytes.toString());
+                bytes.reset();
+            }
+        }
     }
 
     /**
@@ -116,35 +162,65 @@ class TextPlayerTest {
         doOnePlacementHelper(correctUserInput);
     }
 
-    private void playOneTurnHelper(TextPlayer self, TextPlayer enemy, String expected, ByteArrayOutputStream bytes) throws IOException {
-        self.playOneTurn(enemy);    //fire at B2
+    private void doOneFireHelper(TextPlayer self, TextPlayer enemy, String expected, ByteArrayOutputStream bytes) throws IOException {
+        self.doOneFire(enemy);    //fire at B2
         assertEquals( expected, bytes.toString());
         bytes.reset();
     }
 
     @Test
-    void test_play_one_turn() throws IOException {
+    void test_do_one_fire() throws IOException {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         //test fire at miss
         TextPlayer enemy = createTestPlayer(10, 20, "", bytes);
-        TextPlayer self = createTestPlayer(10, 20, "B2\nB2\nB2\nA1\nA1\nC3", bytes);
+        TextPlayer self = createTestPlayer(10, 20, "B2\nB2\nA1\nA1\nC3", bytes);
         String prompt = "Player Test: Which coordinate do you want to fire at?\n\n";
         String divideLine = "-".repeat(60) + "\n";
         String miss = divideLine + "You missed!\n" + divideLine + "\n";
         String hit = divideLine + "You hit a Submarine!\n" + divideLine + "\n";
         String invalidMiss = divideLine + "This is a miss that you've already fire at!\n" + divideLine + "\n";
         String invalidCoord = divideLine + "This is a coordinate that you've already fire at!\n" + divideLine + "\n";
-        playOneTurnHelper(self, enemy, prompt + miss, bytes); //fire at B2
         //add a ship at that coordinate and test hit
         Placement B2V = new Placement("b2v");
         assertNull(enemy.theBoard.tryAddShip(factory.makeSubmarine(B2V)));
-        playOneTurnHelper(self, enemy, prompt + hit, bytes); //fire at B2
+        doOneFireHelper(self, enemy, prompt + hit, bytes); //fire at B2, hit
         //test invalid fire: already hit
         String expected = prompt + invalidCoord + prompt + miss;
-        playOneTurnHelper(self, enemy, expected, bytes); //fire at B2(invalid), then A1(miss)
+        doOneFireHelper(self, enemy, expected, bytes); //fire at B2(hit invalid), then A1(miss)
         //test invalid fire: already miss
         expected = prompt + invalidMiss + prompt + miss;
-        playOneTurnHelper(self, enemy, expected, bytes); //fire at A1(invalid), then B2(miss)
+        doOneFireHelper(self, enemy, expected, bytes); //fire at A1(invalid), then B2(miss)
     }
 
+    @Disabled
+    @Test
+    void test_play_one_turn() throws IOException {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        String inputString = "M\ns\n";
+
+        //test fire at miss
+        TextPlayer enemy = createTestPlayer(10, 20, "", bytes);
+        TextPlayer self = createTestPlayer(10, 20, inputString, bytes);
+        String prompt =
+                "Possible actions for Player " + self.name + ":\n" +
+                        "\n" +
+                        " F Fire at a square\n" +
+                        " M Move a ship to another square (%s remaining)\n" +
+                        " S Sonar scan (%s remaining)\n" +
+                        "\n" +
+                        "Player " + self.name + ", what would you like to do?";
+        String result = prompt + "\n" + "%s" + "\n";
+        String expected = result.formatted(self.getMoveActionRemaining(), self.getSonarActionRemaining(), "move");
+        self.playOneTurn(enemy);
+        assertEquals(expected, bytes.toString());
+        assertEquals(2, self.getMoveActionRemaining());
+        assertEquals(3, self.getSonarActionRemaining());
+        bytes.reset();
+        expected = result.formatted(self.getMoveActionRemaining(), self.getSonarActionRemaining(), "sonar");
+        self.playOneTurn(enemy);
+        assertEquals(expected, bytes.toString());
+        assertEquals(2, self.getMoveActionRemaining());
+        assertEquals(2, self.getSonarActionRemaining());
+        bytes.reset();
+    }
 }

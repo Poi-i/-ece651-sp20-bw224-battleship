@@ -59,6 +59,9 @@ public interface Board<T> {
      */
     public Ship<T> fireAt(Coordinate c);
 
+    public String tryMoveShip(Ship<T> shipToMove, Ship<T> shipAfterMove);
+
+    public void updateMoveShipHitCoords(Ship<T> shipToMove, Ship<T> shipAfterMove);
     /**
      * check all ships on the board are sunk
      * @return true or false

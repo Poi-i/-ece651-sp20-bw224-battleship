@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class BattleShipBoardTest {
 
     private final V1ShipFactory shipFactory = new V1ShipFactory();
+    private final V2ShipFactory shipFactory2 = new V2ShipFactory();
 
     @Test
     public void test_width_and_height_and_miss_info() {
@@ -163,6 +164,72 @@ public class BattleShipBoardTest {
         assertEquals(message.formatted(carrier, "U, L, R, or D"), b.checkPlacementOrientation(carrier, b2h));
         assertEquals(message.formatted(destroyer, "V or H"), b.checkPlacementOrientation(destroyer, c6U));
         assertEquals(message.formatted(submarine, "V or H"), b.checkPlacementOrientation(submarine, c6U));
+    }
+
+    @Test
+    void test_check_all_sunk() {
+        BattleShipBoard<Character> b = new BattleShipBoard<>(10, 20, 'X');
+        assertTrue(b.checkAllSunk());
+        Ship<Character> s1 = shipFactory.makeSubmarine(new Placement("A0V"));
+        assertNull(b.tryAddShip(s1));
+        assertFalse(b.checkAllSunk());
+    }
+
+    @Test
+    void test_try_move_ship() {
+        BattleShipBoard<Character> b = new BattleShipBoard<>(5, 4, 'X');
+        Ship<Character> battleship = shipFactory2.makeBattleship(new Placement("A0U"));
+        Ship<Character> newBattleship = shipFactory2.makeBattleship(new Placement("A2r"));
+        Ship<Character> invalidShip = shipFactory2.makeCarrier(new Placement("A3r"));
+        Ship<Character> invalidBattleShip = shipFactory2.makeBattleship(new Placement("A9U"));
+        BoardTextView view = new BoardTextView(b);
+        // test valid move
+        assertNull(b.tryAddShip(battleship));
+        Coordinate hitAt = new Coordinate("a1");
+        b.fireAt(hitAt);
+        assertTrue(battleship.wasHitAt(hitAt));
+        assertNull(b.tryMoveShip(battleship, newBattleship));
+//        System.out.println(view.displayMyOwnBoard());
+//        System.out.println(view.displayMyEnemyBoard());
+        for (int i = 0; i < b.getHeight(); ++i) {
+            for (int j = 0; j < b.getWidth(); ++j) {
+                Coordinate curr = new Coordinate(i, j);
+                if ((j == 2 && i < 3)) {
+                    assertEquals('b', b.whatIsAt(curr, true));
+                    assertNull(b.whatIsAt(curr, false));
+                    continue;
+                }
+                else if (i == 1 && j == 3) {
+                    assertEquals('*', b.whatIsAt(curr, true));
+                    assertNull(b.whatIsAt(curr, false));
+                    continue;
+                }
+                else if (i == 0 && j == 1) {
+                    assertNull(b.whatIsAt(curr, true));
+                    assertEquals('b', b.whatIsAt(curr, false));
+                    continue;
+                }
+                assertNull(b.whatIsAt(curr, true));
+                assertNull(b.whatIsAt(curr, false));
+
+            }
+        }
+        // test invalid move
+        String diffShipMsg = "The ship type of two ships should be same!\n";
+        String outOfBoundMsg = "That placement is invalid: the ship goes off the right of the board.\n";
+        assertEquals(diffShipMsg, b.tryMoveShip(battleship, invalidShip));
+        assertEquals(outOfBoundMsg, b.tryMoveShip(battleship, invalidBattleShip));
+        System.out.println(view.displayMyOwnBoard());
+        //test right to up
+        hitAt = new Coordinate("a2");
+        b.fireAt(hitAt);
+        assertTrue(newBattleship.wasHitAt(hitAt));
+        System.out.println(view.displayMyOwnBoard());
+        Ship<Character> upBattleship = shipFactory2.makeBattleship(new Placement("A0U"));
+        assertNull(b.tryMoveShip(newBattleship, upBattleship));
+
+        System.out.println(view.displayMyOwnBoard());
+        System.out.println(view.displayMyEnemyBoard());
 
     }
 }

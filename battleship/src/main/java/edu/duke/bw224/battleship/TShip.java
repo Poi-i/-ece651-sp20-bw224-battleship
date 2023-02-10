@@ -5,6 +5,33 @@ import java.util.HashSet;
 public class TShip<T> extends BasicShip<T>{
     private final String name;
 
+
+    /**
+     * set anchor for ship (relative stable coordinate)
+     * @param upperLeft
+     * @param orientation
+     * @return
+     */
+    static Coordinate setAnchor (Coordinate upperLeft, char orientation) {
+        int row = upperLeft.getRow(), col = upperLeft.getCol();
+        int newRow = row, newCol = col;
+        switch (orientation) {
+            case 'U':
+                newRow = row + 1;
+                newCol = col + 2;
+                break;
+            case 'D':
+                break;
+            case 'R':
+                newRow = row + 2;
+                break;
+            case 'L':
+                newCol = col + 1;
+                break;
+        }
+        return new Coordinate(newRow, newCol);
+    }
+
     /**
      * T ship constructor
      * @param upperLeft is the upperLeft coordinate of the ship
@@ -14,7 +41,7 @@ public class TShip<T> extends BasicShip<T>{
      */
     public TShip(String name, Coordinate upperLeft, int height, char orientation, ShipDisplayInfo<T> myDisplayInfo,
                  ShipDisplayInfo<T> enemyDisplayInfo) {
-        super(upperLeft, makeCoords(upperLeft, height, orientation), myDisplayInfo, enemyDisplayInfo);
+        super(setAnchor(upperLeft, orientation), makeCoords(upperLeft, height, orientation), myDisplayInfo, enemyDisplayInfo);
         this.name = name;
     }
 

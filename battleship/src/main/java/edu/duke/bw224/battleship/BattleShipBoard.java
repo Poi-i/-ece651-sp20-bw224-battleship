@@ -1,6 +1,7 @@
 package edu.duke.bw224.battleship;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 
 public class BattleShipBoard<T> implements Board<T>{
@@ -8,7 +9,8 @@ public class BattleShipBoard<T> implements Board<T>{
     private final int height;
     final T missInfo;
     private final ArrayList<Ship<T>> myShips;
-    HashSet<Coordinate> enemyMisses;
+    HashSet<Coordinate> enemyMisses; // record all misses, no matter the ship moved or not
+    HashMap<Coordinate, T> enemyHits; //record all hits, no matter the ship moved or not
     private final PlacementRuleChecker<T> placementRuleChecker;
     private final OrientationRuleChecker<T> orientationRuleChecker;
     private final LoseChecker<T> loseChecker;
@@ -71,6 +73,7 @@ public class BattleShipBoard<T> implements Board<T>{
         this.missInfo = missInfo;
         this.myShips = new ArrayList<>();
         this.enemyMisses = new HashSet<>();
+        this.enemyHits = new HashMap<>();
         this.placementRuleChecker = placementRuleChecker;
         this.orientationRuleChecker = orientationRuleChecker;
         this.loseChecker = loseChecker;
@@ -102,14 +105,19 @@ public class BattleShipBoard<T> implements Board<T>{
      * @return the data we should display
      */
     protected T whatIsAt(Coordinate where, boolean isSelf) {
-        for (Ship<T> s : myShips) {
-            if (s.occupiesCoordinates(where)) {
-                return s.getDisplayInfoAt(where, isSelf);
-            }
-        }
         if (!isSelf) {
             if (enemyMisses.contains(where)) {
                 return missInfo;
+            }
+            if (enemyHits.containsKey(where)) {
+                return enemyHits.get(where);
+            }
+        }
+        else {
+            for (Ship<T> s : myShips) {
+                if (s.occupiesCoordinates(where)) {
+                    return s.getDisplayInfoAt(where, isSelf);
+                }
             }
         }
         return null;
@@ -137,19 +145,24 @@ public class BattleShipBoard<T> implements Board<T>{
      */
     @Override
     public Ship<T> fireAt(Coordinate c) {
-        //If no ships are at this coordinate, record the miss
         if (whatIsAtForSelf(c) != null) {
             Ship<T> theShip = null;
             for (Ship<T> ship : myShips) {
                 if (ship.occupiesCoordinates(c)) {
                     ship.recordHitAt(c);
+                    // update enemyMisses
+                    enemyMisses.remove(c);
+                    enemyHits.put(c, ship.getDisplayInfoAt(c, false));
                     theShip = ship;
                     break;
                 }
             }
             return theShip;
         }
+        //If no ships are at this coordinate, record the miss
         else{
+            //update enemyHits
+            enemyHits.remove(c);
             enemyMisses.add(c);
             return null;
         }
@@ -171,5 +184,59 @@ public class BattleShipBoard<T> implements Board<T>{
     @Override
     public boolean checkAllSunk() {
         return loseChecker.checkLose(this);
+    }
+
+
+    /** Update old hit coordinates in newly moved ship
+     * @param shipToMove is the old ship to move
+     * @param shipAfterMove is the newly moved ship
+     */
+    @Override
+    public void updateMoveShipHitCoords(Ship<T> shipToMove, Ship<T> shipAfterMove) {
+        Coordinate anchor = shipToMove.getAnchor();
+        HashSet<Integer> expected = new HashSet<>();
+        for (Coordinate old: shipToMove.getCoordinates()) {
+            //1. get hit coords in the old ship
+            if (shipToMove.wasHitAt(old)) {
+                //2. for each hit coordinate, replace corresponding part in new ship
+                //2.1 calculate relative diff
+                expected.clear();
+                expected.add(Math.abs(old.getRow() - anchor.getRow()));
+                expected.add(Math.abs(old.getCol() - anchor.getCol()));
+                //2.2 iterate each coordinate in new ship, find correspond one to record hit
+                for (Coordinate after : shipAfterMove.getCoordinates()) {
+                    HashSet<Integer> actual = new HashSet<>();
+                    actual.add(Math.abs(after.getRow() - shipAfterMove.getAnchor().getRow()));
+                    actual.add(Math.abs(after.getCol() - shipAfterMove.getAnchor().getCol()));
+                    if (expected.equals(actual)) {
+                        shipAfterMove.recordHitAt(after);
+                    }
+                }
+            }
+        }
+    }
+
+    /** try to replace an existing ship with a new ship
+     * @param shipToMove is the old ship
+     * @param shipAfterMove is the new ship
+     * @return error message or null
+     */
+    @Override
+    public String tryMoveShip(Ship<T> shipToMove, Ship<T> shipAfterMove) {
+        //1. delete the old ship
+        this.myShips.remove(shipToMove);
+        if (!shipToMove.getName().equals(shipAfterMove.getName())) {
+            return "The ship type of two ships should be same!\n";
+        }
+        //2. try to add new ship on board
+        String message = tryAddShip(shipAfterMove);
+        if (message != null) {
+            //2.1 if add new ship failed, revert old ship deletion
+            tryAddShip(shipToMove);
+            return message;
+        }
+        //3. replace the hit coordinates on the new ship
+        updateMoveShipHitCoords(shipToMove, shipAfterMove);
+        return null;
     }
 }
