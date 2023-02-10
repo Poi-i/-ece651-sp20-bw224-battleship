@@ -14,7 +14,7 @@ public class TShip<T> extends BasicShip<T>{
      */
     public TShip(String name, Coordinate upperLeft, int height, char orientation, ShipDisplayInfo<T> myDisplayInfo,
                  ShipDisplayInfo<T> enemyDisplayInfo) {
-        super(makeCoords(upperLeft, height, orientation), myDisplayInfo, enemyDisplayInfo);
+        super(upperLeft, makeCoords(upperLeft, height, orientation), myDisplayInfo, enemyDisplayInfo);
         this.name = name;
     }
 

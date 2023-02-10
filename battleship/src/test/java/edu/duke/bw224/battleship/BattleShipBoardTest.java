@@ -143,4 +143,26 @@ public class BattleShipBoardTest {
         assertEquals(s2.getDisplayInfoAt(c_1_3, false), b.whatIsAt(c_1_3, false));
         assertEquals(b.missInfo, b.whatIsAt(c_0_0, false));
     }
+
+    @Test
+    void test_check_placement_orientation() {
+        String message = "That placement is invalid: the orientation of %s should be %s!\n";
+        String battleship = "Battleship";
+        String submarine = "Submarine";
+        String carrier = "Carrier";
+        String destroyer = "Destroyer";
+        BattleShipBoard<Character> b = new BattleShipBoard<>(10, 20, 'X');
+        Placement a1v = new Placement("a1v");
+        Placement b2h = new Placement("b2h");
+        Placement c6U = new Placement("c6U");
+        assertNull(b.checkPlacementOrientation(battleship, c6U));
+        assertNull(b.checkPlacementOrientation(carrier, c6U));
+        assertNull(b.checkPlacementOrientation(destroyer, a1v));
+        assertNull(b.checkPlacementOrientation(submarine, b2h));
+        assertEquals(message.formatted(battleship, "U, L, R, or D"), b.checkPlacementOrientation(battleship, a1v));
+        assertEquals(message.formatted(carrier, "U, L, R, or D"), b.checkPlacementOrientation(carrier, b2h));
+        assertEquals(message.formatted(destroyer, "V or H"), b.checkPlacementOrientation(destroyer, c6U));
+        assertEquals(message.formatted(submarine, "V or H"), b.checkPlacementOrientation(submarine, c6U));
+
+    }
 }

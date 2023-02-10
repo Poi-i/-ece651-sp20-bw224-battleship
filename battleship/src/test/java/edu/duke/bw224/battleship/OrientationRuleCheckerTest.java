@@ -9,12 +9,11 @@ class OrientationRuleCheckerTest {
 
     @Test
     void test_orientation_rule() {
-        OrientationRuleChecker orientationRuleChecker = new OrientationRuleChecker();
-        Placement placement = new Placement("b2V");
-        Ship<Character> battleship = factory.makeBattleship(placement);
-        Ship<Character> submarine = factory.makeSubmarine(placement);
-        Ship<Character> carrier = factory.makeCarrier(placement);
-        Ship<Character> destroyer = factory.makeDestroyer(placement);
+        OrientationRuleChecker<Character> orientationRuleChecker = new OrientationRuleChecker();
+        String battleship = "Battleship";
+        String submarine = "Submarine";
+        String carrier = "Carrier";
+        String destroyer = "Destroyer";
         // correct: test ULRD for battleship & carrier
         assertNull(orientationRuleChecker.checkMyRule(battleship, 'U'));
         assertNull(orientationRuleChecker.checkMyRule(battleship, 'L'));

@@ -36,7 +36,7 @@ public class RectangleShip<T> extends BasicShip<T>{
 
     public RectangleShip(String name, Coordinate upperLeft, int width, int height, ShipDisplayInfo<T> myDisplayInfo,
                          ShipDisplayInfo<T> enemyDisplayInfo) {
-        super(makeCoords(upperLeft, width, height), myDisplayInfo, enemyDisplayInfo);
+        super(upperLeft, makeCoords(upperLeft, width, height), myDisplayInfo, enemyDisplayInfo);
         this.name = name;
     }
 

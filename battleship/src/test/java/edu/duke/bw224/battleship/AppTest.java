@@ -77,10 +77,10 @@ class AppTest {
     @Test
     @ResourceLock(value = Resources.SYSTEM_OUT, mode = ResourceAccessMode.READ_WRITE)
     void test_main() throws IOException{
-        mainHelper("input_invalid_placement_player1_win.txt",
-                "output_invalid_placement_player1_win.txt");
-        mainHelper("input_invalid_fire_player2_win.txt",
-                "output_invalid_fire_player2_win.txt");
+        mainHelper("input_invalid_placement_player2_win.txt",
+                "output_invalid_placement_player2_win.txt");
+        mainHelper("input_invalid_fire_player1_win.txt",
+                "output_invalid_fire_player1_win.txt");
 
     }
 }

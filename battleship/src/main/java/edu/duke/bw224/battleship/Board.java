@@ -65,4 +65,6 @@ public interface Board<T> {
      */
     public boolean checkAllSunk();
 
+    String checkPlacementOrientation(String shipName, Placement placement);
+
 }

@@ -14,7 +14,7 @@ public class ZShip<T> extends BasicShip<T>{
      */
     public ZShip(String name, Coordinate upperLeft, char orientation, ShipDisplayInfo<T> myDisplayInfo,
                  ShipDisplayInfo<T> enemyDisplayInfo) {
-        super(makeCoords(upperLeft, orientation), myDisplayInfo, enemyDisplayInfo);
+        super(upperLeft, makeCoords(upperLeft, orientation), myDisplayInfo, enemyDisplayInfo);
         this.name = name;
     }
 

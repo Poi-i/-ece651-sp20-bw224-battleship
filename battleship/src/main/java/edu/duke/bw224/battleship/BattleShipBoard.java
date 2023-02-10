@@ -10,6 +10,7 @@ public class BattleShipBoard<T> implements Board<T>{
     private final ArrayList<Ship<T>> myShips;
     HashSet<Coordinate> enemyMisses;
     private final PlacementRuleChecker<T> placementRuleChecker;
+    private final OrientationRuleChecker<T> orientationRuleChecker;
     private final LoseChecker<T> loseChecker;
 
 
@@ -57,7 +58,8 @@ public class BattleShipBoard<T> implements Board<T>{
      * @param h is the height of the newly constructed Board<T>.
      * @throws IllegalArgumentException if the width or height are less than or equal to zero.
      */
-    public BattleShipBoard(int w, int h, T missInfo, PlacementRuleChecker<T> placementRuleChecker, LoseChecker<T> loseChecker) {
+    public BattleShipBoard(int w, int h, T missInfo, PlacementRuleChecker<T> placementRuleChecker,
+                           OrientationRuleChecker<T> orientationRuleChecker, LoseChecker<T> loseChecker) {
         if (w <= 0) {
             throw new IllegalArgumentException("BattleShipBoard's width must be positive but is " + w);
         }
@@ -70,12 +72,13 @@ public class BattleShipBoard<T> implements Board<T>{
         this.myShips = new ArrayList<>();
         this.enemyMisses = new HashSet<>();
         this.placementRuleChecker = placementRuleChecker;
+        this.orientationRuleChecker = orientationRuleChecker;
         this.loseChecker = loseChecker;
     }
 
     public BattleShipBoard(int width, int height, T missInfo) {
         this(width, height, missInfo, new NoCollisionRuleChecker<>(new InBoundsRuleChecker<>(null)),
-                new AllSunkLoseCheck<>(null));
+                new OrientationRuleChecker<>(), new AllSunkLoseCheck<>(null));
     }
 
     /**
@@ -150,6 +153,16 @@ public class BattleShipBoard<T> implements Board<T>{
             enemyMisses.add(c);
             return null;
         }
+    }
+
+    /** check ship with correct orientation
+     * @param shipName is the ship to check
+     * @param placement the placement to check
+     * @return error message or null
+     */
+    @Override
+    public String checkPlacementOrientation(String shipName, Placement placement) {
+        return orientationRuleChecker.checkMyRule(shipName, placement.getOrientation());
     }
 
     /**

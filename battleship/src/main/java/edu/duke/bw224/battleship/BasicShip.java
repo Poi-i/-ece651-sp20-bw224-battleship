@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 public abstract class BasicShip<T> implements Ship<T>{
     // record coordinates the ship occupies, and track which ones have been hit
+    protected Coordinate upperLeft;
     protected HashMap<Coordinate, Boolean> myPieces;
     protected ShipDisplayInfo<T> myDisplayInfo;
     protected ShipDisplayInfo<T> enemyDisplayInfo;
@@ -12,13 +13,14 @@ public abstract class BasicShip<T> implements Ship<T>{
      * initialize myPieces to have each Coordinate in where mapped to false
      * @param where is the Coordinate iterable
      */
-    public BasicShip(Iterable<Coordinate> where, ShipDisplayInfo<T> myDisplayInfo, ShipDisplayInfo<T> enemyDisplayInfo) {
+    public BasicShip(Coordinate upperLeft, Iterable<Coordinate> where, ShipDisplayInfo<T> myDisplayInfo, ShipDisplayInfo<T> enemyDisplayInfo) {
         myPieces = new HashMap<>();
         for (Coordinate c : where) {
             myPieces.put(c, false);
         }
         this.myDisplayInfo = myDisplayInfo;
         this.enemyDisplayInfo = enemyDisplayInfo;
+        this.upperLeft = upperLeft;
     }
 
     /**

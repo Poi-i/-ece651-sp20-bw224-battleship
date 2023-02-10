@@ -95,9 +95,16 @@ public class TextPlayer {
      * @throws IOException
      */
     public void doOnePlacement(String shipName, Function<Placement, Ship<Character>> createFn) throws IOException {
-        Placement placement = readPlacement("Player " + name + ": Where would you like to place a " + shipName + "?");
+        String prompt = "Player " + name + ": Where would you like to place a " + shipName + "?";
+        Placement placement = readPlacement(prompt);
+        String message = theBoard.checkPlacementOrientation(shipName, placement);
+        if (message != null) {
+            this.out.println(message);
+            doOnePlacement(shipName, createFn);
+            return;
+        }
         Ship<Character> s = createFn.apply(placement);
-        String message = theBoard.tryAddShip(s);
+        message = theBoard.tryAddShip(s);
         if (message != null) {
             this.out.println(message);
             doOnePlacement(shipName, createFn);
@@ -123,8 +130,8 @@ public class TextPlayer {
                 "\n" +
                 "2 \"Submarines\" ships that are 1x2 \n" +
                 "3 \"Destroyers\" that are 1x3\n" +
-                "3 \"Battleships\" that are 1x4\n" +
-                "2 \"Carriers\" that are 1x6\n" +
+                "3 \"Battleships\" that are T-shaped (4 cells)\n" +
+                "2 \"Carriers\" that are Z-shaped (7 cells)\n" +
                 "--------------------------------------------------------------------------------\n";
         //(b) print the instructions message
         this.out.println(instructionMsg);
