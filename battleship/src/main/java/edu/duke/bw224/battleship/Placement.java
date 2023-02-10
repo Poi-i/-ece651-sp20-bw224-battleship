@@ -15,8 +15,8 @@ public class Placement {
     public Placement(Coordinate where, char orientation) {
         this.where = where;
         orientation = Character.toUpperCase(orientation);
-        if("VH".indexOf(orientation) == -1){
-            throw new IllegalArgumentException("the orientation should be either 'V' or 'H' but is "
+        if("VHULDR".indexOf(orientation) == -1){
+            throw new IllegalArgumentException("the orientation should be 'V' or 'H', 'U', 'L', 'R', 'D' but is "
                     + orientation + "\n");
         }
         this.orientation = orientation;
@@ -35,7 +35,7 @@ public class Placement {
         this.where = new Coordinate(coordinateDescr);
         String orientationDescr = descr.substring(2);
         char orientation = Character.toUpperCase(orientationDescr.charAt(0));
-        if(orientationDescr.length() != 1 || !Character.isLetter(orientation) || "VH".indexOf(orientation) == -1){
+        if(orientationDescr.length() != 1 || !Character.isLetter(orientation) || "VHULDR".indexOf(orientation) == -1){
             throw new IllegalArgumentException("the orientation should be either 'V' or 'H' but is "
                     + orientationDescr + "\n");
         }
