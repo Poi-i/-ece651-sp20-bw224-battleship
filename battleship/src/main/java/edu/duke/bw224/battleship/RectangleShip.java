@@ -4,7 +4,7 @@ import java.util.HashSet;
 
 public class RectangleShip<T> extends BasicShip<T>{
 
-    final String name;
+    private final String name;
 
     @Override
     public String getName() {
@@ -32,7 +32,6 @@ public class RectangleShip<T> extends BasicShip<T>{
         }
         return coords;
     }
-
 
 
     public RectangleShip(String name, Coordinate upperLeft, int width, int height, ShipDisplayInfo<T> myDisplayInfo,
