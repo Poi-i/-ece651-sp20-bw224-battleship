@@ -219,17 +219,13 @@ public class BattleShipBoardTest {
         String outOfBoundMsg = "That placement is invalid: the ship goes off the right of the board.\n";
         assertEquals(diffShipMsg, b.tryMoveShip(battleship, invalidShip));
         assertEquals(outOfBoundMsg, b.tryMoveShip(battleship, invalidBattleShip));
-        System.out.println(view.displayMyOwnBoard());
         //test right to up
         hitAt = new Coordinate("a2");
         b.fireAt(hitAt);
         assertTrue(newBattleship.wasHitAt(hitAt));
-        System.out.println(view.displayMyOwnBoard());
         Ship<Character> upBattleship = shipFactory2.makeBattleship(new Placement("A0U"));
         assertNull(b.tryMoveShip(newBattleship, upBattleship));
 
-        System.out.println(view.displayMyOwnBoard());
-        System.out.println(view.displayMyEnemyBoard());
 
     }
 }

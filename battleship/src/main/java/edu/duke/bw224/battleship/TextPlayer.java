@@ -238,8 +238,13 @@ public class TextPlayer {
     }
 
     //TODO
-    public void doOneSonar() {
-        this.out.println("sonar");
+    public void doOneSonar(TextPlayer enemy) throws IOException {
+        //TODO prompt
+        Coordinate sonarCenter = readCoordinate("");
+        Sonar<Character> sonar = new DiamondSonar<>(sonarCenter, 7);
+        sonar.scan(enemy.theBoard);
+        this.out.println(sonar.generateReport());
+        this.sonarActionRemaining--;
     }
 
     /**
@@ -272,8 +277,8 @@ public class TextPlayer {
                 }
             case 'S':
                 if (this.sonarActionRemaining > 0) {
-                    this.sonarActionRemaining--;
-                    doOneSonar();
+
+                    doOneSonar(enemy);
                     break;
                 }
                 else {
