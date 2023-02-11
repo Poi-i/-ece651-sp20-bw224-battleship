@@ -2,6 +2,16 @@ Please select play role for the first Player:
 C Computer Player
 P Person Player
 
+Your action choice: 0 is invalid, please try again!
+Please select play role for the first Player:
+C Computer Player
+P Person Player
+
+Please select play role for the second Player:
+C Computer Player
+P Person Player
+
+Your action choice: ps is invalid, please try again!
 Please select play role for the second Player:
 C Computer Player
 P Person Player
@@ -114,6 +124,10 @@ Player A hit your Carrier at (6, 0)!
 
 Player B hit your Carrier at (6, 0)!
 
+Player A hit your Carrier at (6, 1)!
+
+Player B hit your Carrier at (6, 1)!
+
 Player A hit your Carrier at (7, 0)!
 
 Player B hit your Carrier at (7, 0)!
@@ -121,10 +135,6 @@ Player B hit your Carrier at (7, 0)!
 Player A hit your Carrier at (7, 1)!
 
 Player B hit your Carrier at (7, 1)!
-
-Player A hit your Carrier at (8, 0)!
-
-Player B hit your Carrier at (8, 0)!
 
 Player A hit your Carrier at (8, 1)!
 

@@ -41,7 +41,7 @@ public class DiamondSonar<T> implements Sonar<T> {
      */
     protected boolean inBound(int i, int j, Board<T> board) {
         int width = board.getWidth(), height = board.getHeight();
-        if (i < 0 || i >= width || j < 0 || j >= height) {
+        if (i < 0 || i >= height || j < 0 || j >= width) {
             return false;
         }
         return true;
@@ -74,12 +74,15 @@ public class DiamondSonar<T> implements Sonar<T> {
     @Override
     public HashMap<String, Integer> scan(Board<T> theBoard) {
         HashSet<Coordinate> scanedCoords = generateValidScanArea(theBoard);
+//        System.out.println("start to collect scan info!");
         for (Coordinate coordinate : scanedCoords) {
             if (theBoard.whatIsAtForSelf(coordinate) != null) {
                 String shipName = theBoard.getShipAt(coordinate).getName();
                 scanResult.put(shipName, scanResult.getOrDefault(shipName, 0) + 1 );
+//                System.out.println("scan " + shipName);
             }
         }
+//        System.out.println("end to scan");
         return scanResult;
     }
 

@@ -242,7 +242,7 @@ public class TextPlayer {
         int sonarSize = 7;
         String prompt = "Player " + this.name + ": Please enter the center coordinate of your diamond sonar " +
                 "(size = " + sonarSize + "):";
-        Coordinate sonarCenter = readCoordinate("");
+        Coordinate sonarCenter = readCoordinate(prompt);
         Sonar<Character> sonar = new DiamondSonar<>(sonarCenter, sonarSize);
         sonar.scan(enemy.theBoard);
         String divideLine = "-".repeat(60) + "\n";
@@ -272,22 +272,21 @@ public class TextPlayer {
             case 'M':
                 if (this.moveActionRemaining > 0) {
                     doOneMove(enemy);
-                    break;
                 }
                 else {
                     this.out.println("You have run out of move actions! Please choose another action.");
                     playOneTurn(enemy);
                 }
+                break;
             case 'S':
                 if (this.sonarActionRemaining > 0) {
-
                     doOneSonar(enemy);
-                    break;
                 }
                 else {
                     this.out.println("You have run out of sonar scan actions! Please choose another action.");
                     playOneTurn(enemy);
                 }
+                break;
         }
     }
 

@@ -61,7 +61,7 @@ public class App {
     }
 
     private static BufferedReader generateComputerInput(Board<Character> theBoard) {
-        StringBuilder input = new StringBuilder("a0v\na1v\na2v\na3v\na4v\na5d\na7l\nc0r\nf0u\nq0r\n");
+        StringBuilder input = new StringBuilder("a0v\na1v\na2v\na3v\na4v\na5d\na7l\nc0r\nf0d\nq0r\n");
         for (int i = 0; i < theBoard.getHeight(); ++i) {
             for (int j = 0; j < theBoard.getWidth(); ++j) {
                 input.append((char) ('A' + i) + String.valueOf(j) + "\n");
@@ -79,9 +79,9 @@ public class App {
         TextPlayer player1 = roleChoices.charAt(0) == 'C' ?
                 new NaiveComputerPlayer("A", b1, generateComputerInput(b1), System.out, factory)
                 : new TextPlayer("A", b1, input, System.out, factory);
-        TextPlayer player2 = roleChoices.charAt(0) == 'C' ?
+        TextPlayer player2 = roleChoices.charAt(1) == 'C' ?
                 new NaiveComputerPlayer("B", b2, generateComputerInput(b2), System.out, factory)
-                : new TextPlayer("B", b1, input, System.out, factory);
+                : new TextPlayer("B", b2, input, System.out, factory);
         App app = new App(player1, player2);
         app.doPlacementPhase();
         app.doAttackingPhase();

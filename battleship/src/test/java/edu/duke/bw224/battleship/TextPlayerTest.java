@@ -194,6 +194,17 @@ class TextPlayerTest {
 
     @Disabled
     @Test
+    void test_do_one_sonar() throws IOException {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        //test fire at miss
+        TextPlayer enemy = createTestPlayer(10, 20, "a0v\na1v\na2v\na3v\na4v\na5d\na7l\nc0r\ng4u\ni0u\n", bytes);
+        TextPlayer self = createTestPlayer(10, 20, "s\nc4\ns\nq2\n", bytes);
+        enemy.doPlacementPhase();
+        self.doOneSonar(enemy);
+    }
+
+    @Disabled
+    @Test
     void test_play_one_turn() throws IOException {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         String inputString = "M\ns\n";
