@@ -84,6 +84,6 @@ class AppTest {
                 "output_Computer_Vs_Player.txt");
         mainHelper("input_Computer_Vs_Computer.txt",
                 "output_Computer_Vs_Computer.txt");
-
+        mainHelper("input_PvC.txt", "output_PvC.txt");
     }
 }
