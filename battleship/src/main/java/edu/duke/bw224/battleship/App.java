@@ -51,6 +51,7 @@ public class App {
         TextPlayer player1 = new TextPlayer("A", b1, input, System.out, factory);
         TextPlayer player2 = new TextPlayer("B", b2, input, System.out, factory);
         App app = new App(player1, player2);
+
         app.doPlacementPhase();
         app.doAttackingPhase();
     }

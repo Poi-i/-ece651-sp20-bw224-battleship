@@ -239,11 +239,14 @@ public class TextPlayer {
 
     //TODO
     public void doOneSonar(TextPlayer enemy) throws IOException {
-        //TODO prompt
+        int sonarSize = 7;
+        String prompt = "Player " + this.name + ": Please enter the center coordinate of your diamond sonar " +
+                "(size = " + sonarSize + "):";
         Coordinate sonarCenter = readCoordinate("");
-        Sonar<Character> sonar = new DiamondSonar<>(sonarCenter, 7);
+        Sonar<Character> sonar = new DiamondSonar<>(sonarCenter, sonarSize);
         sonar.scan(enemy.theBoard);
-        this.out.println(sonar.generateReport());
+        String divideLine = "-".repeat(60) + "\n";
+        this.out.println(divideLine + sonar.generateReport() + divideLine);
         this.sonarActionRemaining--;
     }
 
