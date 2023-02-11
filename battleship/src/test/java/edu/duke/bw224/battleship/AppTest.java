@@ -1,5 +1,6 @@
+package edu.duke.bw224.battleship;
+
 import edu.duke.bw224.battleship.App;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.ResourceAccessMode;
 import org.junit.jupiter.api.parallel.ResourceLock;
@@ -79,10 +80,10 @@ class AppTest {
     @Test
     @ResourceLock(value = Resources.SYSTEM_OUT, mode = ResourceAccessMode.READ_WRITE)
     void test_main() throws IOException{
-//        mainHelper("input_invalid_placement_player2_win.txt",
-//                "output_invalid_placement_player2_win.txt");
-        mainHelper("input_invalid_fire_player1_win.txt",
-                "output_invalid_fire_player1_win.txt");
+        mainHelper("input_Computer_Vs_Player.txt",
+                "output_Computer_Vs_Player.txt");
+        mainHelper("input_Computer_Vs_Computer.txt",
+                "output_Computer_Vs_Computer.txt");
 
     }
 }

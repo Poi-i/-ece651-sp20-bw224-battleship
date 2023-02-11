@@ -291,6 +291,12 @@ public class TextPlayer {
         }
     }
 
+    public void printWinMsg() {
+        String winMsg = "|   " + "Player " + this.name + " win!" + "   |\n";
+        String divideLine = "=".repeat(winMsg.length() - 1);
+        this.out.println(divideLine);
+        this.out.println(winMsg + divideLine);
+    }
 
 
     public void doAttackingPhase(TextPlayer enemy) throws IOException {
